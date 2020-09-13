@@ -1,10 +1,17 @@
-import React from 'react';
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+import {Home, Login, Register} from './pages'
 
 function App() {
   return (
-    <div className="App">
-      hello world
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/" exact component={Home} />
+        <Route path="/login" exact component={Login} />
+        <Route path="/register" exact component={Register} />
+      </Switch>
+    </Router>
   );
 }
 
