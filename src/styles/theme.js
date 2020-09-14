@@ -1,4 +1,4 @@
-export default colors = {
+const colors = {
   // Background light mode
   //white
   bg1: "#FBFFFE",
@@ -13,3 +13,5 @@ export default colors = {
   // some ebony grey
   text2: "#636B61",
 };
+
+export default colors

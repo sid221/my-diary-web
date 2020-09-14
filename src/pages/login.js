@@ -10,15 +10,14 @@ import {
   FormContainer,
 } from "../layout/loginRegisterLayout";
 
+import {
+  Input,
+  InputWithIcon,
+  StyledForm,
+  Button,
+} from "../styles/styledElement";
+
 const StyledLoginTitle = styled.div`
-  padding: 0.5rem;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-`;
-const StyledLoginForm = styled.form`
-  height: 100%;
   padding: 0.5rem;
   display: flex;
   justify-content: center;
@@ -53,31 +52,41 @@ const Login = () => {
           </StyledLoginTitle>
         </TitleContainer>
         <FormContainer>
-          <StyledLoginForm onSubmit={handleFormSubmit}>
+          <StyledForm onSubmit={handleFormSubmit}>
             <h2>Login</h2>
-            <input
-              type="email"
-              name="email"
-              value={email}
-              required
-              onChange={(e) => setemail(e.target.value)}
-            />
-            <br />
-            <input
-              type="password"
-              name="password"
-              value={password}
-              required
-              onChange={(e) => setpassword(e.target.value)}
-            />
+            <InputWithIcon>
+              <Input
+                type="email"
+                name="email"
+                value={email}
+                required
+                placeholder="Email address"
+                onChange={(e) => setemail(e.target.value)}
+              />
+              <i className="fa fa-envelope input-icon" aria-hidden="true"></i>
+            </InputWithIcon>
+
+            <InputWithIcon>
+              <Input
+                type="password"
+                name="password"
+                value={password}
+                required
+                placeholder="Password"
+                onChange={(e) => setpassword(e.target.value)}
+              />
+              <i className="fa fa-lock input-icon" aria-hidden="true"></i>
+            </InputWithIcon>
             <br />
             <p>
-              Don't have an account. <Link to="/register">Click Here</Link> to
-              Register
+              <small>
+                Don't have an account. <Link to="/register">Click Here</Link> to
+                Register
+              </small>
             </p>
 
-            <button type="submit">Register</button>
-          </StyledLoginForm>
+            <Button type="submit">Login</Button>
+          </StyledForm>
         </FormContainer>
       </LoginSignupBody>
     </LoginSignupLayout>
