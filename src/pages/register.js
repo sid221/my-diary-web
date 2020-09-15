@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import axios from "axios";
+// import RegisterImg from "../assets/register.svg";
 
 import {
   LoginSignupLayout,
@@ -16,10 +17,17 @@ import {
   StyledForm,
   Select,
   Option,
-  P,
+  ImageContainer,
 } from "../styles/styledElement";
 
-const StyledRegisterTitle = styled.div``;
+const StyledRegisterTitle = styled.div`
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+`;
 
 const Register = () => {
   const [userName, setuserName] = useState();
@@ -52,11 +60,14 @@ const Register = () => {
       <LoginSignupBody>
         <TitleContainer>
           <StyledRegisterTitle>
-            <h2>Register to get started with your personal E-Diary.</h2>
+            <h2>Get started with your personal E-Diary.</h2>
+            <ImageContainer>
+              <img src="/static/images/register.svg" className="register-img" alt="" />
+            </ImageContainer>
             <div>
-              Already have an account.{" "}
+              Already have an account?{" "}
               <Link to="/login">
-                <Button noBackground>Click Here</Button>
+                <Button noBackground>Login</Button>
               </Link>
             </div>
           </StyledRegisterTitle>
@@ -121,7 +132,7 @@ const Register = () => {
               <Option value="female">&#xf182; Female</Option>
               <Option value="other">&#xf225; Other</Option>
             </Select>
-
+            <br />
             <Button type="submit">Register</Button>
           </StyledForm>
         </FormContainer>

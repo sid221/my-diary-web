@@ -15,6 +15,7 @@ import {
   InputWithIcon,
   StyledForm,
   Button,
+  ImageContainer
 } from "../styles/styledElement";
 
 const StyledLoginTitle = styled.div`
@@ -23,6 +24,7 @@ const StyledLoginTitle = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 `;
 
 const Login = () => {
@@ -49,6 +51,15 @@ const Login = () => {
         <TitleContainer>
           <StyledLoginTitle>
             <h2>Welcome Back.</h2>
+            <ImageContainer>
+              <img src="/static/images/login.png" className="login-img" alt="" />
+            </ImageContainer>
+            <div>
+              Don't have an account?{"   "}
+              <Link to="/register">
+                <Button noBackground>Register</Button>
+              </Link>
+            </div>
           </StyledLoginTitle>
         </TitleContainer>
         <FormContainer>
@@ -65,7 +76,6 @@ const Login = () => {
               />
               <i className="fa fa-envelope input-icon" aria-hidden="true"></i>
             </InputWithIcon>
-
             <InputWithIcon>
               <Input
                 type="password"
@@ -78,13 +88,6 @@ const Login = () => {
               <i className="fa fa-lock input-icon" aria-hidden="true"></i>
             </InputWithIcon>
             <br />
-            <p>
-              <small>
-                Don't have an account. <Link to="/register">Click Here</Link> to
-                Register
-              </small>
-            </p>
-
             <Button type="submit">Login</Button>
           </StyledForm>
         </FormContainer>

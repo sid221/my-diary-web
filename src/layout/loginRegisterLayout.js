@@ -52,6 +52,10 @@ const TitleContainer = ({ children }) => {
 const StyledFormContainer = styled.div`
   display: flex;
   justify-content: center;
+  > h1,
+  h2 {
+    margin-block-start: 0;
+  }
 `;
 
 const FormContainer = ({ children }) => {
