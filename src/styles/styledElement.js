@@ -40,12 +40,23 @@ const StyledForm = styled.form`
 const Button = styled.button`
   box-shadow: 0px 0px 10px 1px ${colors.bg3};
   height: 2rem;
-  border: ${(props) => (props.noBackground ? `2px ${colors.bg3}` : "none")};
+  margin: 0.4rem;
+  padding: 0.3rem 1rem;
+  border: ${(props) =>
+    props.noBackground ? `2px solid ${colors.bg3}` : "none"};
   border-radius: 5px;
   font-size: 1rem;
   letter-spacing: 0.1px;
-  color: ${colors.bg1};
+  color: ${(props) => (props.noBackground ? colors.bg3 : colors.bg1)};
   background: ${(props) => (props.noBackground ? colors.bg1 : colors.bg3)};
+  opacity: 1;
+  cursor: pointer;
+  > a {
+    text-decoration: none;
+    height: 2rem;
+    display: flex;
+    flex-grow: 1;
+  }
 `;
 
 const Select = styled.select`
@@ -69,8 +80,34 @@ const Option = styled.option`
 `;
 
 const P = styled.p`
-  margin: 0;
-  font-size: 0.7rem;
+  font-size: 1rem;
+  color: ${colors.text2};
 `;
 
-export { Input, Button, InputWithIcon, StyledForm, Select, Option, P };
+const H1 = styled.h1`
+  font-size: 2rem;
+  color: ${colors.text1};
+`;
+
+const ImageContainer = styled.div`
+  width: 95%;
+  img.login-img {
+    height: 20rem;
+  }
+  img.register-img {
+    height: 18rem;
+    width: 17.5rem;
+  }
+`;
+
+export {
+  Input,
+  Button,
+  InputWithIcon,
+  StyledForm,
+  Select,
+  Option,
+  P,
+  H1,
+  ImageContainer,
+};
