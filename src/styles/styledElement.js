@@ -38,7 +38,10 @@ const StyledForm = styled.form`
 `;
 
 const Button = styled.button`
-  box-shadow: 0px 0px 10px 1px ${colors.bg3};
+  box-shadow: ${(props) =>
+    props.secondary
+      ? `0px 0px 6px 4px ${colors.bg1}`
+      : `0px 1px 19px 3px ${colors.bg3}`};
   height: 2rem;
   margin: 0.4rem;
   padding: 0.3rem 1rem;

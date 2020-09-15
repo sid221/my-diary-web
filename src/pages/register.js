@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 // import RegisterImg from "../assets/register.svg";
 
@@ -30,6 +30,7 @@ const StyledRegisterTitle = styled.div`
 `;
 
 const Register = () => {
+  const history = useHistory();
   const [userName, setuserName] = useState();
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
@@ -62,13 +63,17 @@ const Register = () => {
           <StyledRegisterTitle>
             <h2>Get started with your personal E-Diary.</h2>
             <ImageContainer>
-              <img src="/static/images/register.svg" className="register-img" alt="" />
+              <img
+                src="/static/images/register.svg"
+                className="register-img"
+                alt=""
+              />
             </ImageContainer>
             <div>
-              Already have an account?{" "}
-              <Link to="/login">
-                <Button noBackground>Login</Button>
-              </Link>
+              <span>Already have an account? </span>
+              <Button noBackground onClick={() => history.push("/login")}>
+                Login
+              </Button>
             </div>
           </StyledRegisterTitle>
         </TitleContainer>

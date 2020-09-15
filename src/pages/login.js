@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import {
   LoginSignupLayout,
@@ -15,7 +15,7 @@ import {
   InputWithIcon,
   StyledForm,
   Button,
-  ImageContainer
+  ImageContainer,
 } from "../styles/styledElement";
 
 const StyledLoginTitle = styled.div`
@@ -28,6 +28,7 @@ const StyledLoginTitle = styled.div`
 `;
 
 const Login = () => {
+  const history = useHistory();
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
   const handleFormSubmit = (e) => {
@@ -52,13 +53,20 @@ const Login = () => {
           <StyledLoginTitle>
             <h2>Welcome Back.</h2>
             <ImageContainer>
-              <img src="/static/images/login.png" className="login-img" alt="" />
+              <img
+                src="/static/images/login.png"
+                className="login-img"
+                alt=""
+              />
             </ImageContainer>
             <div>
               Don't have an account?{"   "}
-              <Link to="/register">
-                <Button noBackground>Register</Button>
-              </Link>
+              <Button
+                noBackground
+                onClick={() => history.push("/register")}
+              >
+                Register
+              </Button>
             </div>
           </StyledLoginTitle>
         </TitleContainer>

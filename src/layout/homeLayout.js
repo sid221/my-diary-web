@@ -9,11 +9,16 @@ const StyledHomeLayout = styled.div`
   min-height: 100vh;
   min-height: -webkit-fill-available;
   background: ${colors.bg1};
-  
 `;
 const BodyContainer = styled.div`
   height: calc(100% - 4.5rem);
   padding: 0 5rem;
+  @media only screen and (max-width: 600px) {
+    padding: 0 2.5rem;
+  }
+  @media only screen and (max-width: 600px) {
+    padding: 0 1rem;
+  }
 `;
 
 const HomeLayout = ({ children }) => {

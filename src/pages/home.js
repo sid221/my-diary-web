@@ -9,37 +9,57 @@ const HeroSection = styled.section`
   height: 100%;
   display: flex;
   flex-flow: row;
+  > div {
+    width: 50%;
+  }
+
+  @media only screen and (max-width: 600px) {
+    flex-flow: column-reverse;
+    height: unset;
+    padding-top: 1rem;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    > div {
+      width: 100%;
+    }
+  }
 `;
 
 const InfoContainer = styled.div`
-  position: relative;
-  width: 40%;
+  max-width: 28rem;
   height: 100%;
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
-  > h1 {
-    position: absolute;
-    top: 3rem;
-    left: 0;
-    width: 121%;
-    max-width: 25rem;
+  @media only screen and (max-width: 600px) {
+    text-align: center;
+    padding-bottom: 1.5rem;
+    > h1 {
+      margin-bottom: 0.5rem;
+    }
   }
 `;
 const IllustrationContainer = styled.div`
   position: relative;
-  width: 60%;
   height: 100%;
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
   > img {
-    width: 105%;
+    width: 115%;
     position: absolute;
     left: 1rem;
     transform: rotate3d(0, 1, 0, 180deg);
+  }
+  @media only screen and (max-width: 600px) {
+    > img {
+      position: relative;
+      width: 100%;
+      transform: none;
+    }
   }
 `;
 
@@ -49,7 +69,7 @@ const Home = () => {
     <HomeLayout>
       <HeroSection>
         <InfoContainer>
-          <H1>Write and save your amazing stories...</H1>
+          <H1>Write and save your amazing everyday stories...</H1>
           <P>
             Now you never have to worry about forgetting a feeling, a moment or
             an adventure again. Write everything in your personal E-Diary which
@@ -60,7 +80,7 @@ const Home = () => {
           <Button onClick={() => history.push("/register")}>Get Started</Button>
         </InfoContainer>
         <IllustrationContainer>
-          <img src="/static/images/personal_note.svg" />
+          <img src="/static/images/personal_note.svg" alt="" />
         </IllustrationContainer>
       </HeroSection>
     </HomeLayout>
