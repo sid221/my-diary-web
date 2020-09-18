@@ -3,10 +3,10 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  redirect,
+  Redirect,
 } from "react-router-dom";
 
-import { Home, Login, Register, Diary } from "./pages";
+import { Home, Login, Register, Diary, Profile, PageNotFound } from "./pages";
 
 function App() {
   return (
@@ -17,6 +17,8 @@ function App() {
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
         <Route path="/diary" exact component={Diary} />
+        <Route path="/profile" exact component={Profile} />
+        <Route path="*" component={PageNotFound} />
       </Switch>
     </Router>
   );
