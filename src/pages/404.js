@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { H1, Button } from "../styles/styledElement";
+import { Button } from "../styles/styledElement";
 import colors from "../styles/theme"
 
 const StyledPageNotFound = styled.div`
