@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { Button } from "../styles/styledElement";
-import colors from "../styles/theme"
+import colors from "../styles/theme";
 
 const StyledPageNotFound = styled.div`
   height: -webkit-fill-available;
@@ -24,12 +24,11 @@ const StyledPageNotFound = styled.div`
     &:first-child {
       padding-left: 2rem;
       padding-top: 15%;
-        z-index: 10;
+      z-index: 10;
       width: 40%;
       color: ${colors.bg1};
-      p{
-      color: ${colors.bg2};
-
+      p {
+        color: ${colors.bg2};
       }
     }
     &:last-child {
@@ -39,8 +38,31 @@ const StyledPageNotFound = styled.div`
         position: absolute;
         top: 0;
         right: 2.5%;
-        height: 100%;
-        /* max-width:100%; */
+        width: 129.5%;
+        max-height: 100%;
+      }
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    > div {
+      &:first-child {
+        width: 85%;
+        margin: 1.5rem auto;
+        padding: 0;
+        align-self: center;
+        text-align: center;
+      }
+      &:last-child {
+        width: 100%;
+        > img {
+          position: relative;
+          display: block;
+          width: 80%;
+          right: 0;
+          margin: auto;
+        }
       }
     }
   }
@@ -53,8 +75,10 @@ const PageNotFound = () => {
       <div>
         <h1>Looks like you're lost... </h1>
         <p>The page you are looking for does not exist.</p>
-        <br/>
-        <Button secondary onClick={() => history.push("/")}>Go to Home</Button>
+        <br />
+        <Button secondary onClick={() => history.push("/")}>
+          Go to Home
+        </Button>
       </div>
       <div>
         <img src="/static/images/404.svg" alt="" />
