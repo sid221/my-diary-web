@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import dayjs from "dayjs";
@@ -10,6 +10,8 @@ import {
   StyledDiaryHead,
   StyledNewUser,
 } from "../../layout/diaryLayout";
+
+import { Select } from "../../styles/styledElement";
 import colors from "../../styles/theme";
 
 const StyledNotesContainer = styled.div`
@@ -44,7 +46,7 @@ const StyledMonthlyNotes = styled.div`
   flex-direction: column;
   padding: 1rem;
   h3.date {
-    color: ${colors.dtext1};
+    color: ${colors.text1};
     border-bottom: 2px solid ${colors.dtext2};
     margin-top: 0;
   }
@@ -58,7 +60,7 @@ const StyledMonthlyNotes = styled.div`
   }
 `;
 
-const notes = [
+var notes = [
   {
     noteId: "Osif2gXpdWylDiBLaofX",
     createdAt: "Sep 10 2020",
@@ -66,6 +68,7 @@ const notes = [
     body:
       "Lorem Ipsum is simply    text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
     userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
+    style: { bg: "skyblue" },
   },
   {
     noteId: "jubT58Jsfey11s6ORIIO",
@@ -131,11 +134,12 @@ const notes = [
     body: "new2 post from client side",
   },
 ];
-
+// notes = []
 const Diary = () => {
   let history = useHistory();
   const [monthList, setMonthList] = useState([]);
   const [noteDataByMonth, setNoteDataByMonth] = useState({});
+  const scrollRef = useRef();
   const groupNotesByMonthYear = () => {
     let sortedDiaryNotesArray = [];
 
@@ -145,8 +149,8 @@ const Diary = () => {
     const sortedMonthList = _.sortBy(Object.keys(groupedNotesByMonth), (t) =>
       dayjs(`01 ${t}`)
     ).reverse();
-    console.log("groupedNotesByMonth list: ", groupedNotesByMonth);
-    console.log("sortedMonthList list: ", sortedMonthList);
+    // console.log("groupedNotesByMonth list: ", groupedNotesByMonth);
+    // console.log("sortedMonthList list: ", sortedMonthList);
 
     // getting monthly notes from sortedMonthList and groupedNotesByMonth
     // const gettingDataFromNotesObj = sortedMonthList.map((e) => {
@@ -159,12 +163,12 @@ const Diary = () => {
 
   useEffect(() => {
     groupNotesByMonthYear();
-
-    history.push(window.location.pathname);
-    // return () => {
-    //   cleanup
-    // }
-  }, [history]);
+    console.log(scrollRef.current);
+    window.location.hash = "";
+    return () => {
+      groupNotesByMonthYear();
+    };
+  }, []);
 
   return (
     <DiaryLayout>
@@ -173,13 +177,21 @@ const Diary = () => {
           <img src="/static/images/my_memoir.svg" alt="My Memoir" />
         </h1>
         {monthList.length > 0 && (
-          <select onChange={(e) => (window.location = "#" + e.target.value)}>
+          <Select
+            className="notes-month-list"
+            ref={scrollRef}
+            onChange={(e) => (window.location = "#" + e.target.value)}
+            title="Select month to see that month's notes."
+          >
+            <option disabled selected>
+              Select Month...
+            </option>
             {monthList.map((date) => (
               <option key={date} value={date}>
                 {dayjs(`01 ${date}`).format("MMMM, YYYY")}
               </option>
             ))}
-          </select>
+          </Select>
         )}
         <button title="Create A New Note.">
           <i className="fas fa-plus" />
@@ -196,9 +208,11 @@ const Diary = () => {
                 <div className="notes">
                   {noteDataByMonth[date].length > 0 &&
                     noteDataByMonth[date].map((note) => (
-                      <DiaryNoteCard key={note.noteId}>
+                      <DiaryNoteCard key={note.noteId} {...note.style}>
                         <div className="note-created-date">
-                          {dayjs(note.createdAt).format("ddd, DD MMM YYYY")}
+                          <span className="date-text">
+                            {dayjs(note.createdAt).format("ddd, DD MMM YYYY")}
+                          </span>
                         </div>
                         <div className="note-body">
                           <h2 className="note-title">{note.title}</h2>

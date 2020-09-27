@@ -9,7 +9,7 @@ const StyledDiaryContainer = styled.div`
   padding-left: 12rem;
   height: 100vh;
   min-height: -webkit-fill-available;
-  background: ${colors.dbg1};
+  background: ${colors.bg1};
   display: flex;
 `;
 const DiaryBody = styled.div`
@@ -17,8 +17,9 @@ const DiaryBody = styled.div`
   height: 100vh;
   min-height: 100%;
   overflow: hidden;
-  background: ${colors.dbg};
+  background: ${colors.bg1};
   border-radius: 20px 0 0 20px;
+  box-shadow: inset 0px -4px 12px 3px ${colors.bg2};
 `;
 
 const DiaryLayout = ({ children }) => {
@@ -36,12 +37,18 @@ const DiaryNoteCard = styled.div`
   width: 220px;
   padding: 0.5rem;
   flex-shrink: 0;
-  background: ${colors.dtext2};
+  background: ${(props) => (props.bg ? props.bg : colors.bg1)};
   overflow: hidden;
-  border-left: 4px solid ${colors.dtext3};
+  border-left: 4px solid
+    ${(props) => (props.borderLeft ? props.borderLeft : colors.bg2)};
   border-radius: 4px;
+  box-shadow: 3px 1px 7px 2px ${colors.bg2};
   .note-created-date {
-    background: darkcyan;
+    background: ${(props) => (props.dateBg ? props.dateBg : colors.bg2)};
+    span.date-text {
+      color: ${(props) => (props.dateBg ? props.dateBg : colors.text2)};
+      /* mix-blend-mode: multiply; */
+    }
     border-radius: 3px;
     width: 8.5rem;
     text-align: center;
@@ -64,13 +71,16 @@ const DiaryNoteCard = styled.div`
     text-align: center;
   }
   &:hover {
-    box-shadow: 3px 3px 7px -1px ${colors.dtext1};
+    box-shadow: 3px 3px 10px 0px ${colors.bg3};
+    border-left: 4px solid ${colors.bg3};
+    transform: translateY(-1px);
+    transition: transform 300ms ease-in;
   }
 `;
 
 const StyledDiaryHead = styled.div`
   height: 4rem;
-  padding-left: 10rem;
+  padding-left: 10%;
   display: flex;
   align-items: center;
   box-shadow: 0px -6px 12px 4px ${colors.bg2};
@@ -81,9 +91,13 @@ const StyledDiaryHead = styled.div`
       height: 100%;
     }
   }
+  > select.notes-month-list {
+    margin-left: auto;
+    margin-right: 1rem;
+  }
   > button {
     display: block;
-    margin-left: auto;
+    margin-left: 2rem;
     margin-right: 1rem;
     width: 2.3rem;
     height: 2.3rem;
@@ -112,7 +126,7 @@ const StyledNewUser = styled.div`
   > h2 {
     width: 80%;
     font-weight: 500;
-    color: ${colors.dtext2};
+    color: ${colors.text2};
   }
   button.createNote {
     height: 37px;
@@ -133,11 +147,11 @@ const StyledNewUser = styled.div`
       padding: 0.4rem;
     }
     &:focus {
+      box-shadow: 0px 0px 10px 0px ${colors.bg3};
       outline: none;
     }
-    &:hover,
-    &:focus {
-      box-shadow: 0px 2px 9px -6px ${colors.bg2};
+    &:hover {
+      box-shadow: 0px 0px 10px 0px ${colors.bg3};
     }
   }
 `;

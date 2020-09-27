@@ -12,7 +12,6 @@ const StyledDiaryNav = styled.nav`
   width: 12rem;
   display: flex;
   flex-flow: column;
-  background: ${colors.dbg1};
   align-items: center;
   .homeLink {
     width: 100%;
@@ -31,13 +30,14 @@ const StyledDiaryNav = styled.nav`
     padding: 0.5rem 0;
     text-decoration: none;
     text-align: center;
-    color: ${colors.dtext2};
+    color: ${colors.text2};
     border-radius: 5px 0 0 5px;
-    box-shadow: 0px 2px 9px -6px ${colors.bg2};
+    box-shadow: -5px 2px 9px 0px ${colors.bg3};
     margin-bottom: 0.7rem;
+    color: ${colors.text1};
     &:hover {
-      background: #021627;
-      color: #ffebf0;
+      background: ${colors.bg3};
+      color: ${colors.dtext2};
     }
   }
   a.createNote {
