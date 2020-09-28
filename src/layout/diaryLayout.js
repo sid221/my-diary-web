@@ -4,7 +4,7 @@ import styled from "styled-components";
 import colors from "../styles/theme";
 import DiaryNavbar from "./diaryNavbar";
 
-const StyledDiaryContainer = styled.div`
+const StyledDiaryLayout = styled.div`
   position: relative;
   padding-left: 12rem;
   height: 100vh;
@@ -12,7 +12,8 @@ const StyledDiaryContainer = styled.div`
   background: ${colors.bg1};
   display: flex;
 `;
-const DiaryBody = styled.div`
+
+const StyledDiaryBody = styled.div`
   width: 100%;
   height: 100vh;
   min-height: 100%;
@@ -24,10 +25,10 @@ const DiaryBody = styled.div`
 
 const DiaryLayout = ({ children }) => {
   return (
-    <StyledDiaryContainer>
+    <StyledDiaryLayout>
       <DiaryNavbar />
-      <DiaryBody>{children}</DiaryBody>
-    </StyledDiaryContainer>
+      <StyledDiaryBody>{children}</StyledDiaryBody>
+    </StyledDiaryLayout>
   );
 };
 
@@ -156,4 +157,49 @@ const StyledNewUser = styled.div`
   }
 `;
 
-export { DiaryLayout, DiaryNoteCard, StyledDiaryHead, StyledNewUser };
+const StyledNotesContainer = styled.div`
+  /* width: 100%; */
+  height: calc(100% - 14vh);
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding-left: 2rem;
+  padding-right: 2rem;
+
+  > div.note-content {
+    text-align: justify;
+  }
+
+  /* Scroll */
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+`;
+
+const StyledNoteContainer = styled.div`
+  padding: 1rem 2rem;
+  > div.note-content {
+    text-align: justify;
+  }
+`;
+
+export {
+  DiaryLayout,
+  StyledDiaryLayout,
+  StyledDiaryHead,
+  StyledDiaryBody,
+  StyledNewUser,
+  StyledNotesContainer,
+  DiaryNoteCard,
+  StyledNoteContainer,
+};

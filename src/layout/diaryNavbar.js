@@ -88,7 +88,7 @@ const DiaryNavbar = () => {
       <Link to="/" className="homeLink">
         <img src="/static/images/logo.svg" alt="Memoir" />
       </Link>
-      <Link to="/create-note" title="Create A New Note." className="createNote">
+      <Link to="/note" title="Create A New Note." className="createNote">
         <i className="fas fa-plus" />
         <span>Add Note</span>
       </Link>

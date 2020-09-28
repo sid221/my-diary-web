@@ -128,9 +128,10 @@ const Register = () => {
             <Select
               name="Gender"
               value={gender}
+              defaultValue=""
               onChange={(e) => setgender(e.target.value)}
             >
-              <Option disabled selected hidden>
+              <Option disabled value="" hidden>
                 &#xf228; Gender
               </Option>
               <Option value="male">&#xf183; Male</Option>

@@ -1,39 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React from "react";
 import styled from "styled-components";
-import dayjs from "dayjs";
-import _ from "lodash";
 
 import {
-  DiaryLayout,
-  DiaryNoteCard,
+  StyledDiaryLayout,
   StyledDiaryHead,
+  StyledDiaryBody,
+  StyledNoteContainer,
   StyledNotesContainer,
-  StyledNewUser,
 } from "../../layout/diaryLayout";
-
-import { Select } from "../../styles/styledElement";
-import colors from "../../styles/theme";
-
-const StyledMonthlyNotes = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  h3.date {
-    color: ${colors.text1};
-    border-bottom: 2px solid ${colors.dtext2};
-    margin-top: 0;
-  }
-  div.notes {
-    display: flex;
-    flex-flow: row wrap;
-    > div {
-      margin-right: 1rem;
-      margin-bottom: 1rem;
-    }
-  }
-`;
+import DiaryNavbar from "../../layout/diaryNavbar";
 
 var notes = [
   {
@@ -109,125 +84,40 @@ var notes = [
     body: "new2 post from client side",
   },
 ];
-// notes = []
-const Diary = () => {
-  let history = useHistory();
-  const [monthList, setMonthList] = useState([]);
-  const [noteDataByMonth, setNoteDataByMonth] = useState({});
-  const groupNotesByMonthYear = () => {
-    let sortedDiaryNotesArray = [];
 
-    const groupedNotesByMonth = _.groupBy(notes, (item) =>
-      dayjs(item.createdAt).format("MMM, YYYY")
-    );
-    const sortedMonthList = _.sortBy(Object.keys(groupedNotesByMonth), (t) =>
-      dayjs(`01 ${t}`)
-    ).reverse();
-    // console.log("groupedNotesByMonth list: ", groupedNotesByMonth);
-    // console.log("sortedMonthList list: ", sortedMonthList);
-
-    // getting monthly notes from sortedMonthList and groupedNotesByMonth
-    // const gettingDataFromNotesObj = sortedMonthList.map((e) => {
-    //   return grouped[e];
-    // });
-
-    setMonthList(sortedMonthList);
-    setNoteDataByMonth(groupedNotesByMonth);
-  };
-
-  useEffect(() => {
-    groupNotesByMonthYear();
-    window.location.hash = "";
-    return () => {
-      groupNotesByMonthYear();
-    };
-  }, []);
+const Note = ({ match, ...props }) => {
+  console.log(props);
+  const [note] = !!match.params.id
+    ? notes.filter((d) => d.noteId === match.params.id)
+    : null;
+  console.log(note);
 
   return (
-    <DiaryLayout>
-      <StyledDiaryHead>
-        <h1>
-          <img src="/static/images/my_memoir.svg" alt="My Memoir" />
-        </h1>
-        {monthList.length > 0 && (
-          <Select
-            className="notes-month-list"
-            onChange={(e) => (window.location = "#" + e.target.value)}
-            title="Select month to see that month's notes."
-            defaultValue=""
-          >
-            <option disabled value="">
-              Select Month...
-            </option>
-            {monthList.map((date) => (
-              <option key={date} value={date}>
-                {dayjs(`01 ${date}`).format("MMMM, YYYY")}
-              </option>
-            ))}
-          </Select>
-        )}
-        <button
-          onClick={() => history.push("/note")}
-          title="Create A New Note."
-        >
-          <i className="fas fa-plus" />
-        </button>
-      </StyledDiaryHead>
-      <StyledNotesContainer>
-        {monthList.length > 0 ? (
-          monthList.map((date) => {
-            return (
-              <StyledMonthlyNotes key={date} id={date}>
-                <h3 className="date">
-                  {dayjs(`01 ${date}`).format("MMMM, YYYY")}
-                </h3>
-                <div className="notes">
-                  {noteDataByMonth[date].length > 0 &&
-                    noteDataByMonth[date].map((note) => (
-                      <DiaryNoteCard
-                        key={note.noteId}
-                        {...note.style}
-                        onClick={() => history.push(`/note/${note.noteId}`)}
-                      >
-                        <div className="note-created-date">
-                          <span className="date-text">
-                            {dayjs(note.createdAt).format("ddd, DD MMM YYYY")}
-                          </span>
-                        </div>
-                        <div className="note-body">
-                          <h2 className="note-title">{note.title}</h2>
-                          <div
-                            className="note-content"
-                            dangerouslySetInnerHTML={{ __html: note.body }}
-                          ></div>
-                        </div>
-                        <div className="extend-note">...</div>
-                      </DiaryNoteCard>
-                    ))}
-                </div>
-              </StyledMonthlyNotes>
-            );
-          })
+    <StyledDiaryLayout>
+      <DiaryNavbar page="note" />
+      <StyledDiaryBody>
+        <StyledDiaryHead></StyledDiaryHead>
+        {!!match.params && !!match.params.id ? (
+          !!note ? (
+            <StyledNotesContainer className="note-page">
+              <h1 className="note-title">{note.title}</h1>
+              <p>
+                <small>{note.createdAt}</small>
+              </p>
+              <div
+                className="note-content"
+                dangerouslySetInnerHTML={{ __html: note.body }}
+              ></div>
+            </StyledNotesContainer>
+          ) : (
+            <div>No Such Note Found</div>
+          )
         ) : (
-          <StyledNewUser>
-            <h2>
-              Looks you new here, to create your first note click on the
-              button...
-            </h2>
-            <button
-              onClick={() => history.push("/note")}
-              title="Create A New Note."
-              className="createNote"
-            >
-              <i className="fas fa-plus" />
-              <span>Create Notes</span>
-            </button>
-            <button onClick={groupNotesByMonthYear}>Get Sort Data</button>
-          </StyledNewUser>
+          <div>Add New</div>
         )}
-      </StyledNotesContainer>
-    </DiaryLayout>
+      </StyledDiaryBody>
+    </StyledDiaryLayout>
   );
 };
 
-export default Diary;
+export default Note;
