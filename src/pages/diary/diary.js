@@ -169,6 +169,7 @@ const Diary = () => {
         <button
           onClick={() => history.push("/note")}
           title="Create A New Note."
+          className="diary-add-btn"
         >
           <i className="fas fa-plus" />
         </button>

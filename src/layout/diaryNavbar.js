@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 
 import colors from "../styles/theme";
+import { Button } from "../styles/styledElement";
 
 const StyledDiaryNav = styled.nav`
   position: fixed;
@@ -13,7 +14,7 @@ const StyledDiaryNav = styled.nav`
   display: flex;
   flex-flow: column;
   align-items: center;
-  .homeLink {
+  > a.homeLink {
     width: 100%;
     height: 37px;
     margin-top: 1rem;
@@ -24,87 +25,92 @@ const StyledDiaryNav = styled.nav`
       margin: auto;
     }
   }
-  a.diaryNavLink {
+  > a.diaryNavLink {
     width: 100%;
     margin-left: 0rem;
     padding: 0.5rem 0;
     text-decoration: none;
     text-align: center;
-    color: ${colors.text2};
     border-radius: 5px 0 0 5px;
     box-shadow: -5px 2px 9px 0px ${colors.bg3};
     margin-bottom: 0.7rem;
-    color: ${colors.text1};
+    color: ${colors.bg3};
     &:hover {
       background: ${colors.bg3};
-      color: ${colors.dtext2};
+      color: ${colors.bg2};
     }
-  }
-  a.createNote {
-    width: 100%;
-    margin-left: 0rem;
-    text-decoration: none;
-    text-align: center;
-    color: ${colors.dtext2};
-    border-radius: 20px;
-    background: ${colors.bg3};
-    padding: 0.26rem 0;
-    margin-bottom: 132%;
-    > i {
-      margin-right: 0.5rem;
-      padding: 0.4rem;
-    }
-    &:hover {
-      box-shadow: 0px 2px 9px -6px ${colors.bg2};
+
+    &[data-active="true"] {
+      border-right: 5px solid ${colors.bg3};
+      width: calc(100% - 5px);
     }
   }
   > button {
     width: 100%;
-    height: 37px;
     overflow: hidden;
-    margin-top: 3rem;
-    padding: 0.2rem 0;
-    border: none;
-    border-radius: 5px;
-    background: ${colors.bg3};
-    box-shadow: 0px 2px 9px -6px ${colors.bg2};
-    font-size: 16px;
-    text-decoration: none;
-    text-align: center;
-    color: ${colors.dtext2};
-    &:focus {
-      outline: none;
+    height: 37px;
+    &:last-child {
+      margin-top: auto;
+      margin-bottom: 2rem;
     }
-    > i {
-      margin-right: 0.25rem;
-      padding: 0.46rem;
+    &.create-note-btn {
+      margin-bottom: auto;
+      margin-top: 0rem;
+      &[data-hide="true"] {
+        visibility:hidden;
+      }
     }
   }
 `;
 
 const DiaryNavbar = () => {
+  let location = useLocation();
+  const history = useHistory();
   return (
     <StyledDiaryNav>
       <Link to="/" className="homeLink">
         <img src="/static/images/logo.svg" alt="Memoir" />
       </Link>
-      <Link to="/note" title="Create A New Note." className="createNote">
+      <Button
+        disabled={location.pathname === "/diary/createNote"}
+        data-hide={location.pathname === "/diary/createNote"}
+        onClick={() => history.push("/diary/createNote")}
+        title="Create A New Note."
+        className="create-note-btn"
+        noBackground
+      >
         <i className="fas fa-plus" />
-        <span>Add Note</span>
+        <span> Add Note</span>
+      </Button>
+      <Link
+        to="/diary"
+        className="diaryNavLink"
+        data-active={location.pathname === "/diary"}
+      >
+        <i className="fas fa-book"></i>
+        <span> Diary</span>
       </Link>
-      <Link to="/diary" className="diaryNavLink">
-        Diary
+      <Link
+        to="/"
+        className="diaryNavLink"
+        data-active={location.pathname === "/"}
+      >
+        <i className="fas fa-home"></i>
+        <span> Home</span>
       </Link>
-      <Link to="/" className="diaryNavLink">
-        Home
+      <Link
+        to="/profile"
+        className="diaryNavLink"
+        data-active={location.pathname === "/profile"}
+      >
+        <i className="fas fa-user"></i>
+
+        <span> Profile</span>
       </Link>
-      <Link to="/profile" className="diaryNavLink">
-        Profile
-      </Link>
-      <button>
+      <Button noBackground>
         <i className="fas fa-sign-out-alt" />
-        <span>Logout</span>
-      </button>
+        <span> Logout</span>
+      </Button>
     </StyledDiaryNav>
   );
 };
