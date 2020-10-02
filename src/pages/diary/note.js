@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import DatePicker from "react-date-picker";
+import dayjs from "dayjs";
+import { useLocation, useHistory, Prompt } from "react-router-dom";
+
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.core.css";
+import "react-quill/dist/quill.bubble.css";
+
+import { Input, Button } from "../../styles/styledElement";
 
 import {
   StyledDiaryLayout,
   StyledDiaryHead,
   StyledDiaryBody,
-  StyledNoteContainer,
   StyledNotesContainer,
+  StyledNoteTitle,
+  StyledNoteDate,
+  StyledNoteEditorContainer,
 } from "../../layout/diaryLayout";
 import DiaryNavbar from "../../layout/diaryNavbar";
 
@@ -85,20 +97,140 @@ var notes = [
   },
 ];
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 const Note = ({ match, ...props }) => {
-  console.log(props);
+  const history = useHistory();
+  const query = useQuery();
+  const noteMode = query.get("mode");
   const [note] = !!match.params.id
     ? notes.filter((d) => d.noteId === match.params.id)
-    : null;
-  console.log(note);
+    : [null];
+
+  const [noteBody, setNoteBody] = useState(
+    noteMode == "edit" && !!note ? note.body : ""
+  );
+  const [noteTitle, setNoteTitle] = useState(
+    noteMode == "edit" && !!note ? note.title : ""
+  );
+  const [noteCreatedDate, setNoteCreatedDate] = useState(
+    noteMode == "edit" && !!note ? note.createdAt : ""
+  );
+  const [isBlock, setIsBlock] = useState(
+    noteMode === "edit" && !!note ? true : false
+  );
+
+  const handleNoteSave = (e) => {
+    e.preventDefault();
+
+    const updatedNote = {
+      title: noteTitle,
+      body: noteBody,
+      createdAt: dayjs(noteCreatedDate).format("MMM DD YYYY"),
+    };
+    setTimeout(() => {
+      setIsBlock(false);
+    }, 1000);
+    console.log("Note Saved with data: ", updatedNote);
+
+    console.log(isBlock);
+  };
+
+  const handleNoteEdit = () => {
+    setNoteTitle(note.title);
+    setNoteBody(note.body);
+    setNoteCreatedDate(note.createdAt);
+    setIsBlock(true);
+    history.push(`/note/${match.params.id}?mode=edit`);
+  };
+  const handleNoteDelete = () => {
+    console.log(note.id);
+  };
+
+  if (noteMode === "edit" && !!note) {
+    return (
+      <StyledDiaryLayout>
+        <DiaryNavbar page="note" />
+        <Prompt
+          when={isBlock}
+          message={(location) =>
+            `Are you sure you want to go to ${location.pathname}, your current data would not be saved!`
+          }
+        />
+        <StyledDiaryBody className="note-body-container">
+          <StyledDiaryHead className="note-head-container">
+            <Button
+              onClick={handleNoteSave}
+              noBackground
+              className="note-edit-save"
+            >
+              <i className="fas fa-save"></i>
+              <span> Save</span>
+            </Button>
+          </StyledDiaryHead>
+          <StyledNotesContainer>
+            <StyledNoteTitle>
+              <label htmlFor="note-title">
+                <h2>Title:</h2>
+              </label>
+              <Input
+                name="note-title"
+                value={noteTitle}
+                placeholder={`Enter your title, Default will be "Memoir of ${dayjs(
+                  Date()
+                ).format("ddd, DD MMM YYYY")}"`}
+                onChange={(e) => setNoteTitle(e.target.value)}
+              />
+            </StyledNoteTitle>
+            <StyledNoteDate>
+              <label htmlFor="note-date">
+                <h3>Date:</h3>
+              </label>
+              <div className="datepicker-container">
+                <DatePicker
+                  value={new Date(noteCreatedDate)}
+                  onChange={setNoteCreatedDate}
+                  clearIcon={null}
+                  calendarIcon={<i className="fas fa-calendar-alt" />}
+                />
+              </div>
+            </StyledNoteDate>
+            <StyledNoteEditorContainer>
+              <ReactQuill
+                value={noteBody}
+                onChange={(val) => setNoteBody(val)}
+                placeholder="Write your story here..."
+              />
+            </StyledNoteEditorContainer>
+          </StyledNotesContainer>
+        </StyledDiaryBody>
+      </StyledDiaryLayout>
+    );
+  }
 
   return (
     <StyledDiaryLayout>
       <DiaryNavbar page="note" />
-      <StyledDiaryBody>
-        <StyledDiaryHead></StyledDiaryHead>
-        {!!match.params && !!match.params.id ? (
-          !!note ? (
+      <StyledDiaryBody className="note-body-container">
+        {!!note ? (
+          <>
+            <StyledDiaryHead className="note-head-container">
+              <Button
+                onClick={handleNoteEdit}
+                noBackground
+                className="note-edit-btn"
+              >
+                <i className="fas fa-pencil-alt" />
+                <span>{"  "}Edit</span>
+              </Button>
+              <Button onClick={handleNoteDelete} noBackground>
+                <i className="fas fa-trash" />
+
+                <span>{"  "}Delete</span>
+              </Button>
+            </StyledDiaryHead>
             <StyledNotesContainer className="note-page">
               <h1 className="note-title">{note.title}</h1>
               <p>
@@ -109,11 +241,12 @@ const Note = ({ match, ...props }) => {
                 dangerouslySetInnerHTML={{ __html: note.body }}
               ></div>
             </StyledNotesContainer>
-          ) : (
-            <div>No Such Note Found</div>
-          )
+          </>
         ) : (
-          <div>Add New</div>
+          <>
+            <StyledDiaryHead />
+            <div>No Such Note Found</div>
+          </>
         )}
       </StyledDiaryBody>
     </StyledDiaryLayout>

@@ -41,7 +41,7 @@ const Button = styled.button`
   box-shadow: ${(props) =>
     props.secondary
       ? `0px 0px 6px 4px ${colors.bg1}`
-      : `0px 1px 19px 3px ${colors.bg3}`};
+      : `0px 0px 10px 2px ${colors.text2}`};
   height: 2rem;
   margin: 0.4rem;
   padding: 0.3rem 1rem;
@@ -59,6 +59,15 @@ const Button = styled.button`
     height: 2rem;
     display: flex;
     flex-grow: 1;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    box-shadow: ${(props) =>
+      props.secondary
+        ? `0px 0px 6px 4px ${colors.bg2}`
+        : `0px 0px 10px 2px ${colors.bg3}`};
   }
 `;
 

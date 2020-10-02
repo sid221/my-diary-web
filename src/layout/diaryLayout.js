@@ -11,6 +11,21 @@ const StyledDiaryLayout = styled.div`
   min-height: -webkit-fill-available;
   background: ${colors.bg1};
   display: flex;
+  /* Notes Styles */
+  > div.note-body-container {
+    > div.note-head-container {
+      > button.note-edit-btn {
+        margin-left: auto;
+      }
+      > button.note-edit-save {
+        margin-left: auto;
+        /* margin-right: 2rem; */
+      }
+      > button:last-child {
+        margin-right: 2rem;
+      }
+    }
+  }
 `;
 
 const StyledDiaryBody = styled.div`
@@ -38,6 +53,7 @@ const DiaryNoteCard = styled.div`
   width: 220px;
   padding: 0.5rem;
   flex-shrink: 0;
+  cursor: pointer;
   background: ${(props) => (props.bg ? props.bg : colors.bg1)};
   overflow: hidden;
   border-left: 4px solid
@@ -96,10 +112,10 @@ const StyledDiaryHead = styled.div`
     margin-left: auto;
     margin-right: 1rem;
   }
-  > button {
+  > button.diary-add-btn {
     display: block;
     margin-left: 2rem;
-    margin-right: 1rem;
+    margin-right: 2rem;
     width: 2.3rem;
     height: 2.3rem;
     line-height: 2.3rem;
@@ -193,6 +209,63 @@ const StyledNoteContainer = styled.div`
   }
 `;
 
+const StyledNoteDate = styled.div`
+  height: 2.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  max-width: 15rem;
+  > label {
+    margin-right: 1rem;
+  }
+  > div.datepicker-container {
+    display: flex;
+    flex-grow: 1;
+    > div {
+      flex-grow: 1;
+    }
+    .react-date-picker__wrapper {
+      width: 100%;
+      height: 2.2rem;
+      padding: 0rem 0.4rem;
+      background: #85e0ff;
+      border: none;
+      border-radius: 5px;
+      font-size: 17px;
+      & button {
+        text-align: center;
+        margin: auto 0rem;
+        font-size: 17px;
+        color: ${colors.bg3};
+        border-radius: 50%;
+        &:hover {
+          background: ${colors.bg1};
+        }
+      }
+    }
+  }
+`;
+
+const StyledNoteTitle = styled.div`
+  display: flex;
+  align-items: center;
+  > label {
+    margin-right: 1rem;
+  }
+  > input {
+    font-size: 17px;
+    font-weight: 500;
+  }
+`;
+
+const StyledNoteEditorContainer = styled.div`
+  overflow: hidden;
+  flex-grow: 10;
+  > div.quill {
+    height: calc(100% - 3rem);
+  }
+`;
+
 export {
   DiaryLayout,
   StyledDiaryLayout,
@@ -202,4 +275,7 @@ export {
   StyledNotesContainer,
   DiaryNoteCard,
   StyledNoteContainer,
+  StyledNoteDate,
+  StyledNoteTitle,
+  StyledNoteEditorContainer,
 };
