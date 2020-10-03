@@ -21,9 +21,18 @@ const StyledProfileContainer = styled.div`
     margin-top: -4rem;
     margin-bottom: 2rem;
     height: 8rem;
+    width: 8rem;
     align-self: center;
+    background: ${colors.bg2};
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     img {
       margin: auto;
+      display: block;
+      background: ${colors.text3};
       height: 100%;
     }
   }
