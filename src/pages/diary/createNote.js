@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import { useHistory, Prompt } from "react-router-dom";
+import { Prompt } from "react-router-dom";
 
 import DatePicker from "react-date-picker";
 
@@ -22,7 +22,7 @@ import {
 } from "../../layout/diaryLayout";
 
 const CreateNote = () => {
-//   const history = useHistory();
+  //   const history = useHistory();
   const [noteBody, setNoteBody] = useState("");
   const [noteTitle, setNoteTitle] = useState("");
   const [noteDate, setNoteDate] = useState(new Date());
