@@ -114,9 +114,8 @@ const Diary = () => {
   let history = useHistory();
   const [monthList, setMonthList] = useState([]);
   const [noteDataByMonth, setNoteDataByMonth] = useState({});
+  
   const groupNotesByMonthYear = () => {
-    let sortedDiaryNotesArray = [];
-
     const groupedNotesByMonth = _.groupBy(notes, (item) =>
       dayjs(item.createdAt).format("MMM, YYYY")
     );

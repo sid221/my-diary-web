@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import DatePicker from "react-date-picker";
 import dayjs from "dayjs";
 import { useLocation, useHistory, Prompt } from "react-router-dom";
@@ -110,13 +109,13 @@ const Note = ({ match, ...props }) => {
     : [null];
 
   const [noteBody, setNoteBody] = useState(
-    noteMode == "edit" && !!note ? note.body : ""
+    noteMode === "edit" && !!note ? note.body : ""
   );
   const [noteTitle, setNoteTitle] = useState(
-    noteMode == "edit" && !!note ? note.title : ""
+    noteMode === "edit" && !!note ? note.title : ""
   );
   const [noteCreatedDate, setNoteCreatedDate] = useState(
-    noteMode == "edit" && !!note ? note.createdAt : ""
+    noteMode === "edit" && !!note ? note.createdAt : ""
   );
   const [isBlock, setIsBlock] = useState(
     noteMode === "edit" && !!note ? true : false
