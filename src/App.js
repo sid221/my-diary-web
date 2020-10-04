@@ -5,24 +5,39 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
+import PrivateRoute from "./auth/privateRoute";
 
-import { Home, Login, Register, Diary, Note, CreateNote, Profile, PageNotFound } from "./pages";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+
+import {
+  Home,
+  Login,
+  Register,
+  Diary,
+  Note,
+  CreateNote,
+  Profile,
+  PageNotFound,
+} from "./pages";
 
 function App() {
   return (
     <Router>
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/home" exact children={<Redirect to="/" />} />
-        <Route path="/login" exact component={Login} />
-        <Route path="/register" exact component={Register} />
-        <Route path="/diary" exact component={Diary} />
-        <Route path="/diary/createNote" exact component={CreateNote} />
-        <Route path="/note" exact component={Note} />
-        <Route path="/note/:id" exact component={Note} />
-        <Route path="/profile" exact component={Profile} />
-        <Route path="*" component={PageNotFound} />
-      </Switch>
+      <Provider store={store}>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/home" exact children={<Redirect to="/" />} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/register" exact component={Register} />
+          <PrivateRoute path="/diary" exact component={Diary} />
+          <PrivateRoute path="/diary/createNote" exact component={CreateNote} />
+          <PrivateRoute path="/note" exact component={Note} />
+          <PrivateRoute path="/note/:id" exact component={Note} />
+          <PrivateRoute path="/profile" exact component={Profile} />
+          <Route path="*" component={PageNotFound} />
+        </Switch>
+      </Provider>
     </Router>
   );
 }

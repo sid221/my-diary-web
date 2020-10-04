@@ -3,6 +3,9 @@ import styled from "styled-components";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
+import { useSelector, useDispatch } from "react-redux";
+import { userLogin } from "../redux/user/userActions";
+
 import {
   LoginSignupLayout,
   LoginSignupBody,
@@ -28,9 +31,12 @@ const StyledLoginTitle = styled.div`
 `;
 
 const Login = () => {
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const history = useHistory();
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
+  
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const userData = {
@@ -38,13 +44,7 @@ const Login = () => {
       password,
     };
     console.log(userData);
-    axios
-      .post("http://localhost:3001/api/v2/user/login", userData)
-      .then((data) => {
-        // const d = data.json();
-        console.log(data);
-      })
-      .catch((err) => console.log(err));
+    dispatch(userLogin(userData, history));
   };
   return (
     <LoginSignupLayout>
@@ -61,10 +61,7 @@ const Login = () => {
             </ImageContainer>
             <div>
               Don't have an account?{"   "}
-              <Button
-                noBackground
-                onClick={() => history.push("/register")}
-              >
+              <Button noBackground onClick={() => history.push("/register")}>
                 Register
               </Button>
             </div>
@@ -77,7 +74,7 @@ const Login = () => {
               <Input
                 type="email"
                 name="email"
-                value={email}
+                defaultValue={email}
                 required
                 placeholder="Email address"
                 onChange={(e) => setemail(e.target.value)}
@@ -88,7 +85,7 @@ const Login = () => {
               <Input
                 type="password"
                 name="password"
-                value={password}
+                defaultValue={password}
                 required
                 placeholder="Password"
                 onChange={(e) => setpassword(e.target.value)}
