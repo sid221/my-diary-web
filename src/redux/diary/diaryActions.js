@@ -1,0 +1,1 @@
+export const FETCH_DIARY_NOTE = "FETCH_DIARY_NOTE";
