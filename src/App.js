@@ -5,7 +5,7 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import PrivateRoute from "./auth/privateRoute";
+import { PrivateRoute, LoggedOutRoute } from "./auth/privateRoute";
 
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -28,8 +28,8 @@ function App() {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/home" exact children={<Redirect to="/" />} />
-          <Route path="/login" exact component={Login} />
-          <Route path="/register" exact component={Register} />
+          <LoggedOutRoute path="/login" exact component={Login} />
+          <LoggedOutRoute path="/register" exact component={Register} />
           <PrivateRoute path="/diary" exact component={Diary} />
           <PrivateRoute path="/diary/createNote" exact component={CreateNote} />
           <PrivateRoute path="/note" exact component={Note} />
