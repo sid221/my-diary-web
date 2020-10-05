@@ -69,6 +69,9 @@ const Button = styled.button`
         ? `0px 0px 6px 4px ${colors.bg2}`
         : `0px 0px 10px 2px ${colors.bg3}`};
   }
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 const Select = styled.select`

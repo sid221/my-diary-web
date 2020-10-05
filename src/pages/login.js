@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -13,6 +12,8 @@ import {
   FormContainer,
 } from "../layout/loginRegisterLayout";
 
+import PulseLoader from "react-spinners/PulseLoader";
+
 import {
   Input,
   InputWithIcon,
@@ -20,6 +21,7 @@ import {
   Button,
   ImageContainer,
 } from "../styles/styledElement";
+import colors from "../styles/theme";
 
 const StyledLoginTitle = styled.div`
   padding: 0.5rem;
@@ -31,12 +33,12 @@ const StyledLoginTitle = styled.div`
 `;
 
 const Login = () => {
-  const user = useSelector((state) => state.user);
+  const loginLoading = useSelector((state) => state.user.loginLoading);
   const dispatch = useDispatch();
   const history = useHistory();
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
-  
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const userData = {
@@ -46,6 +48,7 @@ const Login = () => {
     console.log(userData);
     dispatch(userLogin(userData, history));
   };
+
   return (
     <LoginSignupLayout>
       <LoginSignupBody>
@@ -93,7 +96,13 @@ const Login = () => {
               <i className="fa fa-lock input-icon" aria-hidden="true"></i>
             </InputWithIcon>
             <br />
-            <Button type="submit">Login</Button>
+            <Button
+              type="submit"
+              noBackground={loginLoading}
+              disabled={loginLoading}
+            >
+              {loginLoading ? <PulseLoader color={colors.bg3} /> : "Login"}
+            </Button>
           </StyledForm>
         </FormContainer>
       </LoginSignupBody>

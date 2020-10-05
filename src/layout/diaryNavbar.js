@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { Link, useHistory, useLocation } from "react-router-dom";
 
+import { useSelector, useDispatch } from "react-redux";
+import { userLogout } from "../redux/user/userActions";
+
 import colors from "../styles/theme";
 import { Button } from "../styles/styledElement";
 
@@ -57,15 +60,19 @@ const StyledDiaryNav = styled.nav`
       margin-bottom: auto;
       margin-top: 0rem;
       &[data-hide="true"] {
-        visibility:hidden;
+        visibility: hidden;
       }
     }
   }
 `;
 
 const DiaryNavbar = () => {
+  const dispatch = useDispatch();
   let location = useLocation();
   const history = useHistory();
+  const logout = () => {
+    dispatch(userLogout(history));
+  };
   return (
     <StyledDiaryNav>
       <Link to="/" className="homeLink">
@@ -107,7 +114,7 @@ const DiaryNavbar = () => {
 
         <span> Profile</span>
       </Link>
-      <Button noBackground>
+      <Button noBackground onClick={logout}>
         <i className="fas fa-sign-out-alt" />
         <span> Logout</span>
       </Button>
