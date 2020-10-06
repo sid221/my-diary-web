@@ -16,6 +16,7 @@ const StyledLoginSignupLayout = styled.div`
     ${colors.bg2} 100%
   );
   .body-container {
+    position: relative;
     padding-top: 4rem;
     display: flex;
     justify-content: center;
@@ -95,4 +96,13 @@ const FormContainer = ({ children }) => {
   return <StyledFormContainer>{children}</StyledFormContainer>;
 };
 
-export { LoginSignupLayout, LoginSignupBody, TitleContainer, FormContainer };
+export {
+  StyledLoginSignupLayout,
+  LoginSignupLayout,
+  LoginSignupBody,
+  StyledTitleContainer,
+  StyledBodyContainer,
+  TitleContainer,
+  StyledFormContainer,
+  FormContainer,
+};

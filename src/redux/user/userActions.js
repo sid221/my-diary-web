@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API } from "../../vars";
 import {
   USER_LOGIN_LOADING,
   USER_LOGIN_SUCCESS,
@@ -27,14 +28,15 @@ const userLogin = (user, history) => (dispatch) => {
   const { email, password } = user;
   dispatch(userLoginLoading());
   axios
-    .post("/user/login", {
+    .post(`${API}/user/login`, {
       email,
       password,
     })
     .then(({ data }) => {
-      localStorage.setItem("token", data.token);
+      let idToken = `Bearer ${data.token}`;
+      localStorage.setItem("token", idToken);
       const payload = {
-        token: data.token,
+        token: idToken,
         profile: data.profile,
       };
       dispatch(userLoginSuccess(payload));
@@ -47,7 +49,18 @@ const userLogin = (user, history) => (dispatch) => {
 };
 
 const userLogout = (history) => {
-  localStorage.removeItem("token");
+  // const token = localStorage.token;
+// axios
+//     .post(`${API}/user/logout`, {})
+//     .then(({ data }) => {
+//       console.log(data);
+//       localStorage.removeItem("token");
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       localStorage.removeItem("token");
+//     });
+
   return { type: USER_LOGOUT, history };
 };
 
@@ -58,8 +71,29 @@ const userRegisterLoading = () => {
 const userRegisterSuccess = (payload) => {
   return { type: USER_REGISTER_SUCCESS, payload };
 };
-const userRegisterFailed = () => {
-  return { type: USER_REGISTER_FAILED };
+const userRegisterFailed = (payload) => {
+  return { type: USER_REGISTER_FAILED, payload };
+};
+const userRegister = (user, history) => (dispatch) => {
+  dispatch(userRegisterLoading());
+  axios
+    .post(`${API}/user/register`, {
+      ...user,
+    })
+    .then(({ data }) => {
+      let idToken = `Bearer ${data.token}`;
+      localStorage.setItem("token", idToken);
+      const payload = {
+        token: idToken,
+        profile: data.profile,
+      };
+      dispatch(userRegisterSuccess(payload));
+      history.push("/diary");
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch(userRegisterFailed(err));
+    });
 };
 
-export { userLogin, userLogout };
+export { userLogin, userRegister, userLogout };

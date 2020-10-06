@@ -47,6 +47,23 @@ const user = (state = initState, action) => {
       return {};
 
     // USER REGISTER
+    case USER_REGISTER_LOADING:
+      return {
+        ...state,
+        registerLoading: true,
+      };
+    case USER_REGISTER_SUCCESS:
+      return {
+        ...state,
+        registerLoading: false,
+        ...action.payload,
+      };
+    case USER_REGISTER_FAILED:
+      return {
+        ...state,
+        registerLoading: false,
+        registerError: action.payload,
+      };
 
     default:
       return state;
