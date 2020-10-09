@@ -79,7 +79,7 @@ const Register = () => {
   const [password, setpassword] = useState();
   const [gender, setgender] = useState();
   const [confirmPassword, setconfirmPassword] = useState();
-  const [openModel, setOpenModel] = useState(true);
+  const [openModel, setOpenModel] = useState(false);
 
   const confirmRegister = (e) => {
     e.preventDefault();
@@ -90,6 +90,7 @@ const Register = () => {
       confirmPassword,
       gender,
     };
+    setOpenModel(false);
     console.log(userData);
     dispatch(userRegister(userData, history));
   };

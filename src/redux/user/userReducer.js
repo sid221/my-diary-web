@@ -17,6 +17,8 @@ const initState = {
   registerLoading: false,
   registerError: null,
   token: null,
+  profileLoading: false,
+  profileError: null,
   profile: null,
 };
 
@@ -32,6 +34,7 @@ const user = (state = initState, action) => {
       return {
         ...state,
         loginLoading: false,
+        loginError: null,
         ...action.payload,
       };
     case USER_LOGIN_FAILED:
@@ -43,6 +46,7 @@ const user = (state = initState, action) => {
 
     // USER LOGOUT
     case USER_LOGOUT:
+      localStorage.removeItem("token");
       if (action.history) action.history.push("/login");
       return {};
 
@@ -62,7 +66,27 @@ const user = (state = initState, action) => {
       return {
         ...state,
         registerLoading: false,
+        registerError: null,
         registerError: action.payload,
+      };
+
+    // FETCH USER PROFILE
+    case FETCH_USER_LOADING:
+      return {
+        ...state,
+        profileLoading: true,
+      };
+    case FETCH_USER_SUCCESS:
+      return {
+        ...state,
+        profileLoading: false,
+        profile: action.payload,
+      };
+    case FETCH_USER_FAILED:
+      return {
+        ...state,
+        profileLoading: false,
+        profileError: action.payload,
       };
 
     default:

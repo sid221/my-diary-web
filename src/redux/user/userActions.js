@@ -42,25 +42,24 @@ const userLogin = (user, history) => (dispatch) => {
       dispatch(userLoginSuccess(payload));
       history.push("/diary");
     })
-    .catch((err) => {
-      console.log(err);
-      dispatch(userLoginFailed(err));
+    .catch(({ response }) => {
+      console.log(response);
+      dispatch(userLoginFailed(response));
     });
 };
 
 const userLogout = (history) => {
   // const token = localStorage.token;
-// axios
-//     .post(`${API}/user/logout`, {})
-//     .then(({ data }) => {
-//       console.log(data);
-//       localStorage.removeItem("token");
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       localStorage.removeItem("token");
-//     });
-
+  // axios
+  //     .post(`${API}/user/logout`, {})
+  //     .then(({ data }) => {
+  //       console.log(data);
+  //       localStorage.removeItem("token");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       localStorage.removeItem("token");
+  //     });
   return { type: USER_LOGOUT, history };
 };
 
@@ -90,10 +89,42 @@ const userRegister = (user, history) => (dispatch) => {
       dispatch(userRegisterSuccess(payload));
       history.push("/diary");
     })
-    .catch((err) => {
-      console.log(err);
-      dispatch(userRegisterFailed(err));
+    .catch(({ response }) => {
+      console.log(response);
+      dispatch(userRegisterFailed(response));
     });
 };
 
-export { userLogin, userRegister, userLogout };
+// USER profile fetch
+const fetchUserLoading = () => {
+  return { type: FETCH_USER_LOADING };
+};
+const fetchUserSuccess = (payload) => {
+  return { type: FETCH_USER_SUCCESS, payload };
+};
+const fetchUserFailed = (payload) => {
+  return { type: FETCH_USER_FAILED, payload };
+};
+const fetchUser = (history) => (dispatch) => {
+  let token = localStorage.token;
+  dispatch(fetchUserLoading());
+  axios
+    .get(`${API}/user/profile`, {
+      headers: {
+        authorization: token,
+      },
+    })
+    .then(({ data }) => {
+      dispatch(fetchUserSuccess(data));
+    })
+    .catch(({ response }) => {
+      console.log("error: ", response);
+      dispatch(fetchUserFailed(response));
+      // if (error.response.data.error === "auth/id-token-expired") {
+      //   // localStorage.removeItem("token");
+      //   // history.push("/login");
+      // }
+    });
+};
+
+export { userLogin, userRegister, userLogout, fetchUser };

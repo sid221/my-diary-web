@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
+import { useHistory } from "react-router-dom";
+
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUser } from "../redux/user/userActions";
 
 import DiaryNavbar from "../layout/diaryNavbar";
 import { StyledDiaryLayout, StyledDiaryBody } from "../layout/diaryLayout";
@@ -65,19 +69,28 @@ const StyledProfileData = styled.div`
   }
 `;
 const Profile = () => {
-  const profile = {
-    createdAt: "2020-09-02T14:41:07.746Z",
-    userName: "user",
-    userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
-    imageUrl:
-      "https://firebasestorage.googleapis.com/v0/b/my-diary-26246.appspot.com/o/no-image-male.png?alt=media",
-    email: "user@email.com",
-    gender: "male",
-  };
+  // const profile = {
+  //   createdAt: "2020-09-02T14:41:07.746Z",
+  //   userName: "user",
+  //   userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
+  //   imageUrl:
+  //     "https://firebasestorage.googleapis.com/v0/b/my-diary-26246.appspot.com/o/no-image-male.png?alt=media",
+  //   email: "user@email.com",
+  //   gender: "male",
+  // };
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const profile = useSelector((state) => state.user.profile);
   const [editProfile, setEditProfile] = useState(false);
-  const [userName, setUserName] = useState(
-    !!profile.userName ? profile.userName : ""
-  );
+  const [userName, setUserName] = useState(!!profile ? profile.userName : "");
+
+  useEffect(() => {
+    console.log("useEffect user: ", !!!profile);
+    if (!!!profile) {
+      dispatch(fetchUser(history));
+    }
+  }, [history, profile]);
+
   const handleSaveProfile = () => {
     console.log(userName);
 
@@ -88,55 +101,61 @@ const Profile = () => {
       <DiaryNavbar />
       <StyledDiaryBody>
         <StyledProfileContainer>
-          <div className="user-img">
-            <img src={profile.imageUrl} alt="user" />
-          </div>
-          <div className="user-data">
-            <StyledProfileData>
-              <p>Name:</p>
+          {!!profile && (
+            <>
+              <div className="user-img">
+                <img src={profile.imageUrl} alt="user" />
+              </div>
+              <div className="user-data">
+                <StyledProfileData>
+                  <p>Name:</p>
+                  {!editProfile ? (
+                    <h3>{profile.userName}</h3>
+                  ) : (
+                    <Input
+                      value={userName}
+                      placeholder="Enter name..."
+                      onChange={(e) => setUserName(e.target.value)}
+                    />
+                  )}
+                </StyledProfileData>
+                <StyledProfileData>
+                  <p>Gender:</p>
+                  <h3>{profile.gender}</h3>
+                </StyledProfileData>
+                <StyledProfileData>
+                  <p>Email:</p>
+                  <h3>{profile.email}</h3>
+                </StyledProfileData>
+                <StyledProfileData>
+                  <p>Joind at:</p>
+                  <h3>
+                    {dayjs(profile.createdAt).format("ddd, DD MMMM YYYY")}
+                  </h3>
+                </StyledProfileData>
+              </div>
               {!editProfile ? (
-                <h3>{profile.userName}</h3>
+                <Button
+                  noBackground
+                  secondary
+                  title="Edit profile detail"
+                  className="edit-profile-btn"
+                  onClick={() => setEditProfile(true)}
+                >
+                  <i className="fas fa-pencil-alt" />
+                </Button>
               ) : (
-                <Input
-                  value={userName}
-                  placeholder="Enter name..."
-                  onChange={(e) => setUserName(e.target.value)}
-                />
+                <Button
+                  noBackground
+                  secondary
+                  title="Edit profile detail"
+                  className="edit-profile-btn"
+                  onClick={handleSaveProfile}
+                >
+                  <i className="fas fa-save" />
+                </Button>
               )}
-            </StyledProfileData>
-            <StyledProfileData>
-              <p>Gender:</p>
-              <h3>{profile.gender}</h3>
-            </StyledProfileData>
-            <StyledProfileData>
-              <p>Email:</p>
-              <h3>{profile.email}</h3>
-            </StyledProfileData>
-            <StyledProfileData>
-              <p>Joind at:</p>
-              <h3>{dayjs(profile.createdAt).format("ddd, DD MMMM YYYY")}</h3>
-            </StyledProfileData>
-          </div>
-          {!editProfile ? (
-            <Button
-              noBackground
-              secondary
-              title="Edit profile detail"
-              className="edit-profile-btn"
-              onClick={() => setEditProfile(true)}
-            >
-              <i className="fas fa-pencil-alt" />
-            </Button>
-          ) : (
-            <Button
-              noBackground
-              secondary
-              title="Edit profile detail"
-              className="edit-profile-btn"
-              onClick={handleSaveProfile}
-            >
-              <i className="fas fa-save" />
-            </Button>
+            </>
           )}
         </StyledProfileContainer>
       </StyledDiaryBody>
