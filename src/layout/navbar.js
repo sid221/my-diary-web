@@ -11,7 +11,7 @@ const StyledNavbar = styled.nav`
   flex-grow: 1;
   height: 4rem;
   padding: 0 2.3rem;
-  box-shadow: 5px 7px 10px -6px ${(props) => (props.secondary ? colors.bg1 : colors.bg3)};
+  box-shadow: 0px 0px 10px 2px ${(props) => (props.secondary ? colors.bg1 : colors.bg3)};
   display: flex;
   flex-direction: row;
   justify-content: space-between;
