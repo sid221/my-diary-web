@@ -11,6 +11,9 @@ import {
   FETCH_USER_SUCCESS,
   FETCH_USER_FAILED,
   USER_LOGOUT,
+  UPDATE_USER_PROFILE_LOADING,
+  UPDATE_USER_PROFILE_SUCCESS,
+  UPDATE_USER_PROFILE_FAILED,
 } from "./userActionTypes";
 
 // USER Login actions
@@ -127,4 +130,31 @@ const fetchUser = (history) => (dispatch) => {
     });
 };
 
-export { userLogin, userRegister, userLogout, fetchUser };
+// UPDATE USER PROFILE
+const updateUserProfileLoading = () => {
+  return { type: UPDATE_USER_PROFILE_LOADING };
+};
+const updateUserProfileSuccess = (payload) => {
+  return { type: UPDATE_USER_PROFILE_SUCCESS, payload };
+};
+const updateUserProfileFailed = (payload) => {
+  return { type: UPDATE_USER_PROFILE_FAILED, payload };
+};
+const updateUserProfile = (data) => (dispatch) => {
+  dispatch(updateUserProfileLoading());
+  axios
+    .patch(`${API}/user/profile`, data, {
+      headers: { authorization: localStorage.token },
+    })
+    .then(({ data }) => {
+      // console.log(data);
+      let payload = { message: data.message, profile: data.profile };
+      dispatch(updateUserProfileSuccess(payload));
+    })
+    .catch(({ response }) => {
+      console.log(response);
+      dispatch(updateUserProfileFailed(response));
+    });
+};
+
+export { userLogin, userRegister, userLogout, fetchUser, updateUserProfile };

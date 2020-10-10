@@ -4,8 +4,9 @@ import dayjs from "dayjs";
 import { useHistory } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUser } from "../redux/user/userActions";
+import { fetchUser, updateUserProfile } from "../redux/user/userActions";
 
+import PulseLoader from "react-spinners/PulseLoader";
 import DiaryNavbar from "../layout/diaryNavbar";
 import { StyledDiaryLayout, StyledDiaryBody } from "../layout/diaryLayout";
 import colors from "../styles/theme";
@@ -16,16 +17,16 @@ const StyledProfileContainer = styled.div`
   height: 20rem;
   width: 25rem;
   margin: auto;
-  margin-top: 10rem;
+  margin-top: 22%;
   display: flex;
   flex-flow: column;
   border-radius: 5px;
   box-shadow: 0px 0px 15px 0px ${colors.bg2};
   > div.user-img {
-    margin-top: -4rem;
+    margin-top: -5rem;
     margin-bottom: 2rem;
-    height: 8rem;
-    width: 8rem;
+    height: 10rem;
+    width: 10rem;
     align-self: center;
     background: ${colors.bg2};
     border-radius: 50%;
@@ -46,12 +47,6 @@ const StyledProfileContainer = styled.div`
     right: 1rem;
   }
   /* Loading Profile Skeleton */
-  .profile-skeleton::before {
-    content: "";
-    position: absolute;
-    animation: loading 2s infinite linear;
-    background: linear-gradient(to right, #f2f2f2, #ddd, #f2f2f2);
-  }
 
   > div.profile-skeleton {
     position: relative;
@@ -62,19 +57,30 @@ const StyledProfileContainer = styled.div`
       width: 50%;
       min-width: 50%;
       background: ${colors.bg2};
+      overflow: hidden;
+    }
+    &::before {
+      content: " ";
+      height: 100%;
+      width: 1rem;
+      z-index: 1;
+      position: absolute;
+      transform: rotate(30deg);
+      box-shadow: 0 0 15px 4px ${colors.bg1};
+      animation: loading 2s infinite ease-in-out;
+      background: ${colors.bg1};
+    }
+    @keyframes loading {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: rotate(30deg);
+        transform: translateX(400px);
+      }
     }
   }
   > div.img-skeleton {
-  }
-
-  @keyframes loading {
-    0% {
-      transform: translateX(0);
-    }
-    50%,
-    100% {
-      transform: translateX(100%);
-    }
   }
 `;
 
@@ -105,52 +111,39 @@ const ProfileSkeleton = () => {
     <StyledProfileContainer>
       <div className="user-img img-skeleton"></div>
       <div className="user-data profile-skeleton">
-        <StyledProfileData>
-          <p></p>
-          <h3></h3>
-        </StyledProfileData>
-        <StyledProfileData>
-          <p></p>
-          <h3></h3>
-        </StyledProfileData>
-        <StyledProfileData>
-          <p></p>
-          <h3></h3>
-        </StyledProfileData>
-        <StyledProfileData>
-          <p></p>
-          <h3></h3>
-        </StyledProfileData>
+        <StyledProfileData></StyledProfileData>
+        <StyledProfileData></StyledProfileData>
+        <StyledProfileData></StyledProfileData>
+        <StyledProfileData></StyledProfileData>
       </div>
     </StyledProfileContainer>
   );
 };
+
 const Profile = () => {
-  // const profile = {
-  //   createdAt: "2020-09-02T14:41:07.746Z",
-  //   userName: "user",
-  //   userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
-  //   imageUrl:
-  //     "https://firebasestorage.googleapis.com/v0/b/my-diary-26246.appspot.com/o/no-image-male.png?alt=media",
-  //   email: "user@email.com",
-  //   gender: "male",
-  // };
   const history = useHistory();
   const dispatch = useDispatch();
-  const { profile } = useSelector((state) => state.user);
-  const [profileLoading, setprofileLoading] = useState(true);
+  const {
+    profile,
+    profileLoading,
+    profileError,
+    profileUpdateLoading,
+    profileUpdateSuccessMsg,
+    profileUpdateError,
+  } = useSelector((state) => state.user);
+
   const [editProfile, setEditProfile] = useState(false);
   const [userName, setUserName] = useState(!!profile ? profile.userName : "");
 
   useEffect(() => {
-    console.log("useEffect user: ", !!!profile);
     if (!!!profile) {
       dispatch(fetchUser(history));
     }
-  }, [history, profile]);
+  }, [history, profile, dispatch]);
 
   const handleSaveProfile = () => {
     console.log(userName);
+    dispatch(updateUserProfile({ userName, gender: profile.gender }));
 
     setEditProfile(false);
   };
@@ -174,7 +167,7 @@ const Profile = () => {
                       <h3>{profile.userName}</h3>
                     ) : (
                       <Input
-                        value={userName}
+                        defaultValue={profile.userName}
                         placeholder="Enter name..."
                         onChange={(e) => setUserName(e.target.value)}
                       />
@@ -202,8 +195,13 @@ const Profile = () => {
                     title="Edit profile detail"
                     className="edit-profile-btn"
                     onClick={() => setEditProfile(true)}
+                    disabled={profileUpdateLoading}
                   >
-                    <i className="fas fa-pencil-alt" />
+                    {profileUpdateLoading ? (
+                      <PulseLoader color={colors.bg3} />
+                    ) : (
+                      <i className="fas fa-pencil-alt" />
+                    )}
                   </Button>
                 ) : (
                   <Button

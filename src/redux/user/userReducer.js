@@ -9,6 +9,9 @@ import {
   FETCH_USER_SUCCESS,
   FETCH_USER_FAILED,
   USER_LOGOUT,
+  UPDATE_USER_PROFILE_LOADING,
+  UPDATE_USER_PROFILE_SUCCESS,
+  UPDATE_USER_PROFILE_FAILED,
 } from "./userActionTypes";
 
 const initState = {
@@ -20,6 +23,9 @@ const initState = {
   profileLoading: false,
   profileError: null,
   profile: null,
+  profileUpdateLoading: false,
+  profileUpdateError: null,
+  profileUpdateSuccessMsg: null,
 };
 
 const user = (state = initState, action) => {
@@ -89,6 +95,25 @@ const user = (state = initState, action) => {
         profileError: action.payload,
       };
 
+    // USER PROFILE UPDATE
+    case UPDATE_USER_PROFILE_LOADING:
+      return {
+        ...state,
+        profileUpdateLoading: true,
+      };
+    case UPDATE_USER_PROFILE_SUCCESS:
+      return {
+        ...state,
+        profileUpdateLoading: false,
+        profileUpdateSuccessMsg: action.payload.message,
+        profile: action.payload.profile,
+      };
+    case UPDATE_USER_PROFILE_FAILED:
+      return {
+        ...state,
+        profileUpdateLoading: false,
+        profileUpdateError: action.payload,
+      };
     default:
       return state;
   }
