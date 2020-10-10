@@ -4,6 +4,9 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import _ from "lodash";
 
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUserNotes } from "../../redux/diary/diaryActions";
+
 import {
   DiaryLayout,
   DiaryNoteCard,
@@ -11,6 +14,7 @@ import {
   StyledNotesContainer,
   StyledNewUser,
 } from "../../layout/diaryLayout";
+import ShowError from "../../layout/ShowError";
 
 import { Select } from "../../styles/styledElement";
 import colors from "../../styles/theme";
@@ -35,114 +39,131 @@ const StyledMonthlyNotes = styled.div`
       max-width: 250px;
     }
   }
+  /* LOADING SKELETON */
+  &[data-loader] {
+    > h3.date {
+      height: 1.5rem;
+      background: ${colors.bg2};
+      border-bottom: none;
+      margin-top: 0;
+    }
+    > div.notes {
+      display: flex;
+      flex-flow: row wrap;
+      div {
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+        flex-grow: 1;
+        max-width: 250px;
+        > div.note-created-date {
+          height: 1.3rem;
+          width: 70%;
+          background: ${colors.bg2};
+        }
+        > div.note-body {
+          > h2 {
+            margin-top: 0;
+            width: 85%;
+            background: ${colors.bg2};
+            height: 1.6rem;
+          }
+          > div {
+            p {
+              width: 70%;
+              margin-bottom: 1rem;
+              height: 1.1rem;
+              background: ${colors.bg2};
+            }
+          }
+        }
+      }
+    }
+  }
 `;
 
-var notes = [
-  {
-    noteId: "Osif2gXpdWylDiBLaofX",
-    createdAt: "Sep 10 2020",
-    title: "What is Lorem Ipsum?",
-    body:
-      "Lorem Ipsum is simply    text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
-    style: { bg: "skyblue" },
-  },
-  {
-    noteId: "jubT58Jsfey11s6ORIIO",
-    createdAt: "Sep 07 2020",
-    body:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
-    title: "What is Lorem Ipsum?",
-  },
-  {
-    noteId: "C6gc9uB5q1jjLqgtJRzZ",
-    createdAt: "Sep 05 2020",
-    userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
-    title: "What is Lorem Ipsum?",
-    body:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  },
-  {
-    noteId: "jUDAYCro0tw0BSsAR1kG",
-    createdAt: "Sep 03 2020",
-    userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
-    title: "What is Lorem Ipsum?",
-    body:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  },
-  {
-    noteId: "lCgknVQwkcbk3QxY30bV",
-    createdAt: "Sep 01 2020",
-    body:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
-    title: "What is Lorem Ipsum?",
-  },
-  {
-    noteId: "hxqrhEh4hfGnVdGo96aP",
-    createdAt: "Mar 25 2015",
-    body:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    title: "What is Lorem Ipsum?",
-    userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
-  },
-  {
-    noteId: "HXONW66nI0wY4sTHDuqE",
-    createdAt: "Mar 21 2020",
-    body:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
-    title: "What is Lorem Ipsum?",
-  },
-  {
-    noteId: "4OczUCbdI2O2JZrjhafk",
-    createdAt: "Apr 20 2020",
-    title: "What is Lorem Ipsum?",
-    userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
-    body:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  },
-  {
-    noteId: "kavPgHEfJiOikkLNfG9H",
-    createdAt: "Sep 03 2020",
-    title: "posted 2ndnote",
-    userId: "EJJgMWkx8pQc09v04vM5USUhrJ82",
-    body: "new2 post from client side",
-  },
-];
-// notes = []
+const DiaryLoadingSkeleton = () => {
+  const ghostArr = [{}, {}, {}, {}, {}, {}];
+  return (
+    <>
+      <StyledMonthlyNotes data-loader>
+        <h3 className="date">{""}</h3>
+        <div className="notes">
+          {ghostArr.map((d, i) => (
+            <DiaryNoteCard key={i}>
+              <div className="note-created-date"></div>
+              <div className="note-body">
+                <h2 className="note-title">{""}</h2>
+                <div className="note-content">
+                  <p></p>
+                  <p></p>
+                  <p></p>
+                </div>
+              </div>
+            </DiaryNoteCard>
+          ))}
+        </div>
+      </StyledMonthlyNotes>
+      <StyledMonthlyNotes data-loader>
+        <h3 className="date">{""}</h3>
+        <div className="notes">
+          {ghostArr.map((d, i) => (
+            <DiaryNoteCard key={i}>
+              <div className="note-created-date"></div>
+              <div className="note-body">
+                <h2 className="note-title">{""}</h2>
+                <div className="note-content">
+                  <p></p>
+                  <p></p>
+                  <p></p>
+                </div>
+              </div>
+            </DiaryNoteCard>
+          ))}
+        </div>
+      </StyledMonthlyNotes>
+    </>
+  );
+};
+
 const Diary = () => {
-  let history = useHistory();
-  const [monthList, setMonthList] = useState([]);
-  const [noteDataByMonth, setNoteDataByMonth] = useState({});
-
-  const groupNotesByMonthYear = () => {
-    const groupedNotesByMonth = _.groupBy(notes, (item) =>
-      dayjs(item.createdAt).format("MMM, YYYY")
-    );
-    const sortedMonthList = _.sortBy(Object.keys(groupedNotesByMonth), (t) =>
-      dayjs(`01 ${t}`)
-    ).reverse();
-    // console.log("groupedNotesByMonth list: ", groupedNotesByMonth);
-    // console.log("sortedMonthList list: ", sortedMonthList);
-
-    // getting monthly notes from sortedMonthList and groupedNotesByMonth
-    // const gettingDataFromNotesObj = sortedMonthList.map((e) => {
-    //   return grouped[e];
-    // });
-
-    setMonthList(sortedMonthList);
-    setNoteDataByMonth(groupedNotesByMonth);
-  };
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { notes, notesLoading, notesError } = useSelector(
+    (state) => state.diary
+  );
+  const [monthList, setMonthList] = useState();
+  const [noteDataByMonth, setNoteDataByMonth] = useState();
 
   useEffect(() => {
-    groupNotesByMonthYear();
+    // console.log("diary useEffect| Notes: ", notes);
     window.location.hash = "";
+    if (!notes) {
+      dispatch(fetchUserNotes());
+    }
+  }, [dispatch, notes]);
+
+  useEffect(() => {
+    const groupNotesByMonthYear = () => {
+      const groupedNotesByMonth = _.groupBy(notes, (item) =>
+        dayjs(item.createdAt).format("MMM, YYYY")
+      );
+      const sortedMonthList = _.sortBy(Object.keys(groupedNotesByMonth), (t) =>
+        dayjs(`01 ${t}`)
+      ).reverse();
+      // console.log("groupedNotesByMonth list: ", groupedNotesByMonth);
+      // console.log("sortedMonthList list: ", sortedMonthList);
+      // getting monthly notes from sortedMonthList and groupedNotesByMonth
+      // const gettingDataFromNotesObj = sortedMonthList.map((e) => {
+      //   return grouped[e];
+      // });
+      setMonthList(sortedMonthList);
+      setNoteDataByMonth(groupedNotesByMonth);
+    };
+    groupNotesByMonthYear();
     return () => {
       groupNotesByMonthYear();
     };
-  }, []);
+  }, [notes]);
 
   return (
     <DiaryLayout>
@@ -150,7 +171,7 @@ const Diary = () => {
         <h1>
           <img src="/static/images/my_memoir.svg" alt="My Memoir" />
         </h1>
-        {monthList.length > 0 && (
+        {monthList?.length > 0 && (
           <Select
             className="notes-month-list"
             onChange={(e) => (window.location = "#" + e.target.value)}
@@ -176,7 +197,11 @@ const Diary = () => {
         </button>
       </StyledDiaryHead>
       <StyledNotesContainer>
-        {monthList.length > 0 ? (
+        {notesLoading ? (
+          <DiaryLoadingSkeleton />
+        ) : !!notesError ? (
+          <ShowError error={notesError.data.error} />
+        ) : monthList?.length > 0 ? (
           monthList.map((date) => {
             return (
               <StyledMonthlyNotes key={date} id={date}>
@@ -224,7 +249,6 @@ const Diary = () => {
               <i className="fas fa-plus" />
               <span>Create Notes</span>
             </button>
-            <button onClick={groupNotesByMonthYear}>Get Sort Data</button>
           </StyledNewUser>
         )}
       </StyledNotesContainer>

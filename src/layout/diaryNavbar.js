@@ -35,7 +35,7 @@ const StyledDiaryNav = styled.nav`
     text-decoration: none;
     text-align: center;
     border-radius: 5px 0 0 5px;
-    box-shadow: -5px 2px 9px 0px ${colors.bg3};
+    box-shadow: -2px 1px 7px -3px ${colors.bg3};
     margin-bottom: 0.7rem;
     color: ${colors.bg3};
     &:hover {
@@ -52,6 +52,7 @@ const StyledDiaryNav = styled.nav`
     width: 100%;
     overflow: hidden;
     height: 37px;
+    border: none;
     &:last-child {
       margin-top: auto;
       margin-bottom: 2rem;

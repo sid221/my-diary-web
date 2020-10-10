@@ -11,6 +11,7 @@ import DiaryNavbar from "../layout/diaryNavbar";
 import { StyledDiaryLayout, StyledDiaryBody } from "../layout/diaryLayout";
 import colors from "../styles/theme";
 import { Input, Button } from "../styles/styledElement";
+import ShowError from "../layout/ShowError";
 
 const StyledProfileContainer = styled.div`
   position: relative;
@@ -47,40 +48,42 @@ const StyledProfileContainer = styled.div`
     right: 1rem;
   }
   /* Loading Profile Skeleton */
-
-  > div.profile-skeleton {
-    position: relative;
-    > div {
+  &[data-loading] {
+    > div.profile-skeleton {
       position: relative;
-      height: 1.3rem;
-      margin: 1rem;
-      width: 50%;
-      min-width: 50%;
-      background: ${colors.bg2};
       overflow: hidden;
-    }
-    &::before {
-      content: " ";
-      height: 100%;
-      width: 1rem;
-      z-index: 1;
-      position: absolute;
-      transform: rotate(30deg);
-      box-shadow: 0 0 15px 4px ${colors.bg1};
-      animation: loading 2s infinite ease-in-out;
-      background: ${colors.bg1};
-    }
-    @keyframes loading {
-      0% {
-        transform: translateX(0);
+      > div {
+        position: relative;
+        height: 1.3rem;
+        margin: 1rem;
+        width: 50%;
+        min-width: 50%;
+        background: ${colors.bg2};
+        overflow: hidden;
       }
-      100% {
+      &::before {
+        content: " ";
+        height: 100%;
+        width: 1rem;
+        z-index: 1;
+        position: absolute;
         transform: rotate(30deg);
-        transform: translateX(400px);
+        box-shadow: 0 0 15px 4px ${colors.bg1};
+        animation: loading 2s infinite ease-in-out;
+        background: ${colors.bg1};
+      }
+      @keyframes loading {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: rotate(30deg);
+          transform: translateX(400px);
+        }
       }
     }
-  }
-  > div.img-skeleton {
+    > div.img-skeleton {
+    }
   }
 `;
 
@@ -108,7 +111,7 @@ const StyledProfileData = styled.div`
 
 const ProfileSkeleton = () => {
   return (
-    <StyledProfileContainer>
+    <StyledProfileContainer data-loading>
       <div className="user-img img-skeleton"></div>
       <div className="user-data profile-skeleton">
         <StyledProfileData></StyledProfileData>
@@ -153,7 +156,7 @@ const Profile = () => {
       <StyledDiaryBody>
         {profileLoading ? (
           <ProfileSkeleton />
-        ) : (
+        ) : !!profileError ? <ShowError error={profileError.data.error} />: (
           <StyledProfileContainer>
             {!!profile && (
               <>

@@ -97,7 +97,7 @@ const DiaryNoteCard = styled.div`
 
 const StyledDiaryHead = styled.div`
   height: 4rem;
-  padding-left: 10%;
+  padding-left: 3rem;
   display: flex;
   align-items: center;
   box-shadow: 0px -6px 12px 4px ${colors.bg2};
@@ -110,11 +110,10 @@ const StyledDiaryHead = styled.div`
   }
   > select.notes-month-list {
     margin-left: auto;
-    margin-right: 1rem;
+    margin-right: 3rem;
   }
   > button.diary-add-btn {
     display: block;
-    margin-left: 2rem;
     margin-right: 2rem;
     width: 2.3rem;
     height: 2.3rem;
@@ -130,6 +129,9 @@ const StyledDiaryHead = styled.div`
     &:focus {
       outline: none;
     }
+  }
+  & > :nth-child(2) {
+    margin-left: auto;
   }
 `;
 
