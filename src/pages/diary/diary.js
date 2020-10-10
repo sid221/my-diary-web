@@ -31,6 +31,8 @@ const StyledMonthlyNotes = styled.div`
     > div {
       margin-right: 1rem;
       margin-bottom: 1rem;
+      flex-grow: 1;
+      max-width: 250px;
     }
   }
 `;
@@ -114,7 +116,7 @@ const Diary = () => {
   let history = useHistory();
   const [monthList, setMonthList] = useState([]);
   const [noteDataByMonth, setNoteDataByMonth] = useState({});
-  
+
   const groupNotesByMonthYear = () => {
     const groupedNotesByMonth = _.groupBy(notes, (item) =>
       dayjs(item.createdAt).format("MMM, YYYY")
