@@ -6,12 +6,13 @@ import _ from "lodash";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUserNotes } from "../../redux/diary/diaryActions";
+import { setNote } from "../../redux/note/noteActions";
 
 import {
   DiaryLayout,
   DiaryNoteCard,
   StyledDiaryHead,
-  StyledNotesContainer,
+  StyledDiaryNotesContainer,
   StyledNewUser,
 } from "../../layout/diaryLayout";
 import ShowError from "../../layout/ShowError";
@@ -165,6 +166,11 @@ const Diary = () => {
     };
   }, [notes]);
 
+  const handleNoteClick = (noteId) => {
+    const note = notes.filter((d) => d.noteId === noteId)[0];
+    dispatch(setNote(note));
+    history.push(`/note/${noteId}`);
+  };
   return (
     <DiaryLayout>
       <StyledDiaryHead>
@@ -196,11 +202,11 @@ const Diary = () => {
           <i className="fas fa-plus" />
         </button>
       </StyledDiaryHead>
-      <StyledNotesContainer>
+      <StyledDiaryNotesContainer>
         {notesLoading ? (
           <DiaryLoadingSkeleton />
         ) : !!notesError ? (
-          <ShowError error={notesError.data.error} />
+          <ShowError error={notesError} />
         ) : monthList?.length > 0 ? (
           monthList.map((date) => {
             return (
@@ -214,7 +220,7 @@ const Diary = () => {
                       <DiaryNoteCard
                         key={note.noteId}
                         {...note.style}
-                        onClick={() => history.push(`/note/${note.noteId}`)}
+                        onClick={() => handleNoteClick(note.noteId)}
                       >
                         <div className="note-created-date">
                           <span className="date-text">
@@ -251,7 +257,7 @@ const Diary = () => {
             </button>
           </StyledNewUser>
         )}
-      </StyledNotesContainer>
+      </StyledDiaryNotesContainer>
     </DiaryLayout>
   );
 };
