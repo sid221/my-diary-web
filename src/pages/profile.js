@@ -156,7 +156,7 @@ const Profile = () => {
       <StyledDiaryBody>
         {profileLoading ? (
           <ProfileSkeleton />
-        ) : !!profileError ? <ShowError error={profileError.data.error} />: (
+        ) : !!profileError ? <ShowError error={profileError} />: (
           <StyledProfileContainer>
             {!!profile && (
               <>
@@ -198,7 +198,8 @@ const Profile = () => {
                     title="Edit profile detail"
                     className="edit-profile-btn"
                     onClick={() => setEditProfile(true)}
-                    disabled={profileUpdateLoading}
+                    // disabled={profileUpdateLoading}
+                    disabled
                   >
                     {profileUpdateLoading ? (
                       <PulseLoader color={colors.bg3} />
