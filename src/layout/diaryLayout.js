@@ -133,6 +133,11 @@ const StyledDiaryHead = styled.div`
   & > :nth-child(2) {
     margin-left: auto;
   }
+  &.note-head-container {
+    & > :nth-child(2) {
+      margin-left: 0.5rem;
+    }
+  }
 `;
 
 const StyledNewUser = styled.div`
@@ -175,7 +180,7 @@ const StyledNewUser = styled.div`
   }
 `;
 
-const StyledNotesContainer = styled.div`
+const StyledDiaryNotesContainer = styled.div`
   /* width: 100%; */
   height: calc(100% - 14vh);
   overflow-x: hidden;
@@ -184,28 +189,29 @@ const StyledNotesContainer = styled.div`
   flex-direction: column;
   padding-left: 2rem;
   padding-right: 2rem;
-
-  > div.note-content {
-    text-align: justify;
-  }
-
-  /* Scroll */
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #888;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
 `;
 
-const StyledNoteContainer = styled.div`
-  padding: 1rem 2rem;
+// Note Specifiic Style Component
+
+const StyledNotesContainer = styled.div`
+  position: relative;
+  height: calc(100% - 14vh);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const StyledNoteBody = styled.div`
+  width: 100%;
+  max-width: 740px;
+  box-sizing: border-box;
+  padding: 1.5rem;
+  padding-bottom: 0rem;
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-flow: column;
   > div.note-content {
     text-align: justify;
   }
@@ -274,9 +280,10 @@ export {
   StyledDiaryHead,
   StyledDiaryBody,
   StyledNewUser,
-  StyledNotesContainer,
+  StyledDiaryNotesContainer,
   DiaryNoteCard,
-  StyledNoteContainer,
+  StyledNotesContainer,
+  StyledNoteBody,
   StyledNoteDate,
   StyledNoteTitle,
   StyledNoteEditorContainer,
