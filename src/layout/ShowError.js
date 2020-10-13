@@ -48,16 +48,16 @@ const ShowError = ({ error }) => {
     console.log("close clicked");
     setShowErr(false);
   };
-  console.log(error);
+  const { message, response } = error;
   return (
     <StyledErrorContainer data-show={showErr}>
       <div className="error-body">
         <div className="error-text">
-          {!error
-            ? "Something went wrong!"
-            : error === "auth/id-token-expired"
+          {!response
+            ? (message ?? "Something went wrong!")
+            : response.data.error === "auth/id-token-expired"
             ? "Auth Error! Please Logout and Login again!"
-            : error}
+            : response.data.error}
         </div>
         <div className="close-error">
           <img onClick={handleClose} src="/static/images/close.svg" alt="x" />
