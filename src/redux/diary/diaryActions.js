@@ -26,9 +26,9 @@ const fetchUserNotes = () => (dispatch) => {
     //   console.log(data);
       dispatch(fetchUserNotesSuccess(data));
     })
-    .catch(({ response }) => {
-      console.log(response);
-        dispatch(fetchUserNotesFailed(response));
+    .catch((err) => {
+      // console.log(err.response );
+        dispatch(fetchUserNotesFailed(err));
     });
 };
 

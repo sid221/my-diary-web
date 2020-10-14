@@ -120,9 +120,9 @@ const fetchUser = (history) => (dispatch) => {
     .then(({ data }) => {
       dispatch(fetchUserSuccess(data));
     })
-    .catch(({ response }) => {
-      console.log("error: ", response);
-      dispatch(fetchUserFailed(response));
+    .catch((err) => {
+      console.log("error: ", err);
+      dispatch(fetchUserFailed(err));
       // if (error.response.data.error === "auth/id-token-expired") {
       //   // localStorage.removeItem("token");
       //   // history.push("/login");
