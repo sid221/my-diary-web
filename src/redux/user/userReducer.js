@@ -72,7 +72,6 @@ const user = (state = initState, action) => {
       return {
         ...state,
         registerLoading: false,
-        registerError: null,
         registerError: action.payload,
       };
 

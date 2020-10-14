@@ -131,8 +131,8 @@ const Profile = () => {
     profileLoading,
     profileError,
     profileUpdateLoading,
-    profileUpdateSuccessMsg,
-    profileUpdateError,
+    // profileUpdateSuccessMsg,
+    // profileUpdateError,
   } = useSelector((state) => state.user);
 
   const [editProfile, setEditProfile] = useState(false);
