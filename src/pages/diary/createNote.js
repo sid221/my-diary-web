@@ -34,7 +34,7 @@ const CreateNote = () => {
   const [noteTitle, setNoteTitle] = useState("");
   const [noteDate, setNoteDate] = useState(new Date());
   const [noteBody, setNoteBody] = useState(null);
-  const [noteStyle, setNoteStyle] = useState({});
+  // const [noteStyle, setNoteStyle] = useState({});
   const [isBlock, setIsBlock] = useState(true);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const CreateNote = () => {
         noteTitle || `Memoir of ${dayjs(Date()).format("ddd, DD MMM YYYY")}`,
       body: noteBody,
       createdAt: dayjs(noteDate).format("DD MMM YYYY"),
-      styles: noteStyle || {},
+      styles:  {},
     };
 
     // console.log(noteData);
@@ -56,14 +56,14 @@ const CreateNote = () => {
     dispatch(createNote(noteData, history));
   };
 
-  const handleSetStyle = () => {
-    // let style = {
-    //   bg:
-    //   borderLeft:
-    //   dateBg:
-    // }
-    setNoteStyle({});
-  };
+  // const handleSetStyle = () => {
+  //   // let style = {
+  //   //   bg:
+  //   //   borderLeft:
+  //   //   dateBg:
+  //   // }
+  //   setNoteStyle({});
+  // };
 
   return (
     <StyledDiaryLayout>
