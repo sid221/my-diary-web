@@ -27,8 +27,8 @@ const userLoginFailed = (payload) => {
   return { type: USER_LOGIN_FAILED, payload };
 };
 
-const userLogin = (user, history) => (dispatch) => {
-  const { email, password } = user;
+const userLogin = (userData, history) => (dispatch) => {
+  const { email, password } = userData;
   dispatch(userLoginLoading());
   axios
     .post(`${API}/user/login`, {
