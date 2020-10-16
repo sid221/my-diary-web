@@ -212,6 +212,7 @@ const StyledNoteBody = styled.div`
   overflow-y: auto;
   display: flex;
   flex-flow: column;
+  white-space: pre;
   > div.note-content {
     text-align: justify;
   }
