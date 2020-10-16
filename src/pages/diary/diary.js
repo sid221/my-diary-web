@@ -195,7 +195,7 @@ const Diary = () => {
           </Select>
         )}
         <button
-          onClick={() => history.push("/note")}
+          onClick={() => history.push("/diary/createNote")}
           title="Create A New Note."
           className="diary-add-btn"
         >
