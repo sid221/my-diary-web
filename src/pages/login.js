@@ -45,7 +45,7 @@ const Login = () => {
       email,
       password,
     };
-    console.log(userData);
+    // console.log(userData);
     dispatch(userLogin(userData, history));
   };
 
