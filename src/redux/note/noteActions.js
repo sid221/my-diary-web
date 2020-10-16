@@ -1,7 +1,6 @@
 import axios from "axios";
 import { API } from "../../vars";
 import {
-  // EDIT_NOTE,
   SET_NOTE,
   FETCH_NOTE_LOADING,
   FETCH_NOTE_SUCCESS,
@@ -12,9 +11,9 @@ import {
   DELETE_NOTE_LOADING,
   DELETE_NOTE_SUCCESS,
   DELETE_NOTE_FAILED,
-  // SAVE_NOTE_LOADING,
-  // SAVE_NOTE_SUCCESS,
-  // SAVE_NOTE_FAILED,
+  EDIT_NOTE_LOADING,
+  EDIT_NOTE_SUCCESS,
+  EDIT_NOTE_FAILED,
 } from "./noteActionTypes";
 
 const setNote = (note) => {
@@ -102,4 +101,37 @@ const deleteNote = (noteId, history) => (dispatch) => {
     });
 };
 
-export { setNote, fetchNote, createNote, deleteNote };
+// Edit note
+const editNoteLoading = () => {
+  return { type: EDIT_NOTE_LOADING };
+};
+const editNoteSuccess = (payload) => {
+  return { type: EDIT_NOTE_SUCCESS, payload };
+};
+const editNoteFailed = (payload) => {
+  return { type: EDIT_NOTE_FAILED, payload };
+};
+const editNote = (updatedNoteData, noteId, history) => (dispatch) => {
+  dispatch(editNoteLoading());
+  axios
+    .patch(
+      `${API}/notes/${noteId}`,
+      { updatedNoteData },
+      {
+        headers: {
+          authorization: localStorage.token,
+        },
+      }
+    )
+    .then(({ data }) => {
+      console.log(data);
+      dispatch(editNoteSuccess(data));
+      history.push(`/note/${noteId}`);
+    })
+    .catch((err) => {
+      console.log(err);
+      return dispatch(editNoteFailed(err));
+    });
+};
+
+export { setNote, fetchNote, createNote, deleteNote, editNote };

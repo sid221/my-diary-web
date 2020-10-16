@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { useLocation, useHistory, Prompt } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchNote, deleteNote } from "../../redux/note/noteActions";
+import { fetchNote, deleteNote, editNote } from "../../redux/note/noteActions";
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -53,16 +53,15 @@ const Note = ({ match, ...props }) => {
     // deleteNoteData,
     deleteNoteError,
     deleteNoteLoading,
+    editNoteLoading,
+    editNoteError,
   } = useSelector((state) => state.note);
 
   const noteMode = query.get("mode");
   // console.log("Mode: ", noteMode);
   const noteId = match.params.id;
 
-  const [noteBody, setNoteBody] = useState(null);
-  const [noteTitle, setNoteTitle] = useState(null);
-  const [noteCreatedDate, setNoteCreatedDate] = useState(null);
-  // const [editedNote, setEditedNote] = useState({});
+  const [editedNote, setEditedNote] = useState({});
   const [isBlock, setIsBlock] = useState(noteMode === "edit");
   const [openModel, setOpenModel] = useState(false);
 
@@ -72,32 +71,6 @@ const Note = ({ match, ...props }) => {
     }
   }, [currentNote, dispatch, noteId]);
 
-  const handleNoteSave = (e) => {
-    e.preventDefault();
-
-    const updatedNote = {
-      title: noteTitle,
-      body: noteBody,
-      createdAt: dayjs(noteCreatedDate).format("MMM DD YYYY"),
-    };
-    setTimeout(() => {
-      setIsBlock(false);
-    }, 1000);
-    console.log("Note Saved with data: ", updatedNote);
-
-    console.log(isBlock);
-  };
-
-  const handleNoteEdit = () => {
-    setIsBlock(true);
-    setNoteTitle(currentNote.title);
-    setNoteBody(currentNote.body);
-    setNoteCreatedDate(currentNote.createdAt);
-    // setEditedNote(currentNote);
-    history.push(`/note/${noteId}?mode=edit`);
-    console.log("editNote");
-  };
-
   const handleNoteDelete = () => {
     setOpenModel(true);
   };
@@ -105,6 +78,29 @@ const Note = ({ match, ...props }) => {
     setOpenModel(false);
     console.log("confirm");
     dispatch(deleteNote(currentNote.noteId, history));
+  };
+
+  // Edit note stuff
+  const handleNoteEdit = () => {
+    history.push(`/note/${noteId}?mode=edit`);
+  };
+  const handleNoteSave = (e) => {
+    e.preventDefault();
+    setIsBlock(false);
+    dispatch(editNote(editedNote, noteId, history));
+  };
+  const setNoteTitle = (e) => {
+    e.persist();
+    setEditedNote((preState) => ({ ...preState, title: e.target.value }));
+  };
+  const setNoteCreatedDate = (value) => {
+    setEditedNote((preState) => ({
+      ...preState,
+      createdAt: dayjs(value).format("MMM DD YYYY"),
+    }));
+  };
+  const setNoteBody = (value) => {
+    setEditedNote((preState) => ({ ...preState, body: value }));
   };
 
   const renderEditNote = (
@@ -121,13 +117,21 @@ const Note = ({ match, ...props }) => {
             onClick={handleNoteSave}
             noBackground
             className="note-edit-save"
+            disabled={editNoteLoading}
           >
-            <i className="fas fa-save"></i>
-            <span> Save</span>
+            {editNoteLoading ? (
+              <PulseLoader color={colors.bg3} />
+            ) : (
+              <>
+                <i className="fas fa-save"></i>
+                <span> Save</span>
+              </>
+            )}
           </Button>
         )}
       </StyledDiaryHead>
       <StyledNotesContainer>
+        {!!editNoteError && <ShowError error={editNoteError} />}
         {noteLoading ? (
           <NoteSkeleton />
         ) : !!noteError ? (
@@ -141,11 +145,11 @@ const Note = ({ match, ...props }) => {
                 </label>
                 <Input
                   name="note-title"
-                  defaultValue={currentNote.title}
+                  defaultValue={editedNote.title || currentNote.title}
                   placeholder={`Enter your title, Default will be "Memoir of ${dayjs(
                     Date()
                   ).format("ddd, DD MMM YYYY")}"`}
-                  onChange={(e) => setNoteTitle(e.target.value)}
+                  onChange={setNoteTitle}
                 />
               </StyledNoteTitle>
               <StyledNoteDate>
@@ -154,7 +158,7 @@ const Note = ({ match, ...props }) => {
                 </label>
                 <div className="datepicker-container">
                   <DatePicker
-                    value={new Date(noteCreatedDate)}
+                    value={new Date(currentNote.createdAt)}
                     onChange={setNoteCreatedDate}
                     clearIcon={null}
                     format="dd-MM-y"
@@ -165,7 +169,7 @@ const Note = ({ match, ...props }) => {
               <StyledNoteEditorContainer>
                 <ReactQuill
                   theme="snow"
-                  value={currentNote.body}
+                  value={editedNote.body || currentNote.body}
                   onChange={(val) => setNoteBody(val)}
                   placeholder="Write your story here..."
                 />
