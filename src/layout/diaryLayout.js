@@ -64,7 +64,6 @@ const DiaryNoteCard = styled.div`
     background: ${(props) => (props.dateBg ? props.dateBg : colors.bg2)};
     span.date-text {
       color: ${(props) => (props.dateBg ? props.dateBg : colors.text2)};
-      /* mix-blend-mode: multiply; */
     }
     border-radius: 3px;
     width: 8.5rem;
@@ -123,6 +122,7 @@ const StyledDiaryHead = styled.div`
     border: none;
     border-radius: 50%;
     background: ${colors.bg3};
+    cursor: pointer;
     &:hover {
       box-shadow: 0px 0px 10px 2px ${colors.bg2};
     }
