@@ -13,6 +13,7 @@ import {
   StyledFormContainer,
 } from "../layout/loginRegisterLayout";
 import Navbar from "../layout/navbar";
+import ModelConfirmation from "../layout/ModelConfirmation";
 
 import {
   Input,
@@ -34,41 +35,6 @@ const StyledRegisterTitle = styled.div`
   text-align: center;
 `;
 
-const StyledModel = styled.div`
-  position: absolute;
-  height: 109%;
-  width: 100%;
-  top: 0;
-  background: #ff0000c4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  > div {
-    background: ${colors.bg2};
-    border-radius: 10px;
-    padding: 1.5rem;
-    height: 200px;
-    width: 300px;
-    > p {
-      border-radius: 10px;
-      background: ${colors.bg1};
-      padding: 1rem;
-      margin-top: 0;
-    }
-    > div {
-      width: 100%;
-      > button {
-        &:first-child {
-          margin-left: 35%;
-        }
-      }
-    }
-  }
-  @media only screen and (max-width: 600px) {
-    height: 100%;
-  }
-`;
 const Register = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -199,24 +165,22 @@ const Register = () => {
             </StyledForm>
           </StyledFormContainer>
         </StyledBodyContainer>
-        {openModel && (
-          <StyledModel>
-            <div>
-              <p>
-                Are you sure that you want to register with the entered details.
-                Be sure to check your password and remember it, because we don't
-                have password reset option as of now!
-              </p>
-              <div>
-                <Button onClick={confirmRegister}>Confirm</Button>
-                <Button onClick={() => setOpenModel(false)} noBackground>
-                  Cancel
-                </Button>
-              </div>
-            </div>
-          </StyledModel>
-        )}
       </div>
+      {openModel && (
+        <ModelConfirmation>
+          <p>
+            Are you sure that you want to register with the entered details. Be
+            sure to check your password and remember it, because we don't have
+            password reset option as of now!
+          </p>
+          <div>
+            <Button onClick={confirmRegister}>Confirm</Button>
+            <Button onClick={() => setOpenModel(false)} noBackground>
+              Cancel
+            </Button>
+          </div>
+        </ModelConfirmation>
+      )}
     </StyledLoginSignupLayout>
   );
 };
