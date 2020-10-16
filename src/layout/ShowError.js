@@ -11,6 +11,7 @@ const StyledErrorContainer = styled.div`
   width: calc(100vw - 14rem);
   > div.error-body {
     position: absolute;
+    z-index: 9999;
     background: ${colors.bg2};
     padding-left: 0.5rem;
     border-radius: 5px;
@@ -54,7 +55,7 @@ const ShowError = ({ error }) => {
       <div className="error-body">
         <div className="error-text">
           {!response
-            ? (message ?? "Something went wrong!")
+            ? message ?? "Something went wrong!"
             : response.data.error === "auth/id-token-expired"
             ? "Auth Error! Please Logout and Login again!"
             : response.data.error}
