@@ -26,6 +26,10 @@ const StyledDiaryLayout = styled.div`
       }
     }
   }
+  // Responsive Diary Nav
+  @media only screen and (max-width: 800px) {
+    padding-left: 0rem;
+  }
 `;
 
 const StyledDiaryBody = styled.div`
@@ -36,6 +40,12 @@ const StyledDiaryBody = styled.div`
   background: ${colors.bg1};
   border-radius: 20px 0 0 20px;
   box-shadow: inset 0px -4px 12px 3px ${colors.bg2};
+
+  // Responsive Diary Nav
+  @media only screen and (max-width: 800px) {
+    border-radius: unset;
+    box-shadow: unset;
+  }
 `;
 
 const DiaryLayout = ({ children }) => {
@@ -102,6 +112,7 @@ const StyledDiaryHead = styled.div`
   box-shadow: 0px -6px 12px 4px ${colors.bg2};
   > h1 {
     height: calc(100% - 1.5rem);
+    position: relative;
     > img {
       display: block;
       height: 100%;
@@ -136,6 +147,28 @@ const StyledDiaryHead = styled.div`
   &.note-head-container {
     & > :nth-child(2) {
       margin-left: 0.5rem;
+    }
+  }
+
+  // Responsive Diary Nav
+  @media only screen and (max-width: 800px) {
+    padding-left: 4.5rem;
+    z-index: 15;
+    > h1 {
+      > img {
+        display: none;
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        width: 4rem;
+        height: 4rem;
+        left: 3rem;
+        top: -0.725rem;
+        background-image: url("/static/images/brand.svg");
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
     }
   }
 `;

@@ -40,6 +40,9 @@ const StyledErrorContainer = styled.div`
         cursor: pointer;
       }
     }
+    @media only screen and (max-width: 800px) {
+      right: -6rem;
+    }
   }
 `;
 
