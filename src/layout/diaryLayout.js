@@ -249,6 +249,24 @@ const StyledNoteBody = styled.div`
   > div.note-content {
     text-align: justify;
   }
+
+  // Responsive Design
+  @media only screen and (max-width: 800px) {
+    max-width: 650px;
+  }
+  @media only screen and (max-width: 600px) {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+  @media only screen and (max-width: 450px) {
+    max-width: 450px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @media only screen and (max-width: 400px) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 `;
 
 const StyledNoteDate = styled.div`
