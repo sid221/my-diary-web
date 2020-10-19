@@ -161,10 +161,9 @@ const StyledDiaryHead = styled.div`
       &::before {
         content: "";
         position: absolute;
-        width: 4rem;
-        height: 4rem;
+        width: 3rem;
+        height: 100%;
         left: 3rem;
-        top: -0.725rem;
         background-image: url("/static/images/brand.svg");
         background-size: contain;
         background-repeat: no-repeat;
